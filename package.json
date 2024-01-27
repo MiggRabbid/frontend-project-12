@@ -1,0 +1,25 @@
+{
+  "name": "@hexlet/code",
+  "version": "0.0.1",
+  "description": "Analogue of Slack chat (simplified version)",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiggRabbid/frontend-project-12.git"
+  },
+  "author": "MiggRabbd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MiggRabbid/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/MiggRabbid/frontend-project-12#readme",
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.0"
+  }
+}
