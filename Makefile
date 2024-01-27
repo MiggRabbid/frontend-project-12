@@ -8,7 +8,7 @@ start-frontend:
 	make -C frontend start
 
 start-backend:
-	npx start-server -a loclhost
+	npx start-server -a localhost
 
 start:
 	make start-backend & make start-frontend
