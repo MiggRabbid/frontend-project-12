@@ -1,4 +1,4 @@
-lint-frontend:
+llint-frontend:
 	make -C frontend lint
 
 install:
