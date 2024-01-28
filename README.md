@@ -4,6 +4,7 @@
 
 ---
 <br>
+
 # Чат (Slack)
 
 Аналог Slack-чата (упрощенная версия).
@@ -12,6 +13,7 @@
 
 ---
 <br>
+
 ## Порядок установки и системные требования
 
 #### Порядок установки
@@ -32,6 +34,7 @@ make start //для запуска на локальном хосте
 
 ---
 <br>
+
 #### Используемый стек
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000&style=flat)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
