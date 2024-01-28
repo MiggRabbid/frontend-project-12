@@ -3,8 +3,6 @@
 [![Actions Status](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/MiggRabbid/frontend-project-12/actions)
 
 ---
-<br>
-
 # Чат (Slack)
 
 Аналог Slack-чата (упрощенная версия).
