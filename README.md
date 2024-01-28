@@ -3,12 +3,15 @@
 [![Actions Status](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/MiggRabbid/frontend-project-12/actions)
 
 ---
+<br>
 # Чат (Slack)
 
 Аналог Slack-чата (упрощенная версия).
+<br>
 Ссылка на проект: [клик](https://simple-chat-x30r.onrender.com).
 
 ---
+<br>
 ## Порядок установки и системные требования
 
 #### Порядок установки
@@ -28,6 +31,7 @@ make start //для запуска на локальном хосте
 - npm 10.2.4
 
 ---
+<br>
 #### Используемый стек
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000&style=flat)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
