@@ -3,13 +3,14 @@
 [![Actions Status](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/MiggRabbid/frontend-project-12/actions)
 
 ---
-
 # Чат (Slack)
 
-Аналог Slack-чата (упрощенная версия)
+Аналог Slack-чата (упрощенная версия).
+<br>
+Ссылка на проект: [клик](https://simple-chat-x30r.onrender.com).
 
-Ссылка на проект: [клик](https://simple-chat-x30r.onrender.com)
 ---
+<br>
 
 ## Порядок установки и системные требования
 
@@ -17,11 +18,11 @@
 
 ```
 git clone https://github.com/MiggRabbid/frontend-project-12
-frontend-project-12
+cd frontend-project-12
 make install
 make build
 
-make dev //для запуска на локальном хосте
+make start //для запуска на локальном хосте
 ```
 
 #### Системные требования
@@ -30,6 +31,7 @@ make dev //для запуска на локальном хосте
 - npm 10.2.4
 
 ---
+<br>
 
 #### Используемый стек
 
