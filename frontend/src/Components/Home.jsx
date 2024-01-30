@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  console.log('-------------- Home');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -10,18 +11,13 @@ const Home = () => {
     if (!token) {
       navigate('/login');
     }
+    if (token) {
+      navigate('/chat');
+    }
   });
 
   return (
-    <div className="d-flex justify-content-center">
-      <div>
-        <h1>Чат (slack)</h1>
-        <p>добро пожаловать</p>
-        <br />
-        <p className="text-primary">Вам нужно авторизоваться</p>
-      </div>
-
-    </div>
+    <div className="d-flex justify-content-center" />
   );
 };
 
