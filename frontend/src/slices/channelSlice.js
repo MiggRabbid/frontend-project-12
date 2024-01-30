@@ -4,19 +4,25 @@ const channelSlice = createSlice({
   name: 'channel',
   initialState: {
     activeChannel: 'general',
+    activeChannelId: null,
     currentChannels: null,
   },
   reducers: {
-    setCurrentChannels: (state, action) => ({
+    setCurrentChannels: (state, action) => {
+      const currentChannels = action.payload;
+      const activeChannel = currentChannels.find((channel) => channel.name === state.activeChannel);
+      return { ...state, activeChannelId: activeChannel.id, currentChannels };
+    },
+    setActiveChanel: (state, action) => ({
       ...state,
-      currentChannels: action.payload,
-
+      activeChannel: action.payload,
     }),
     getChannels: (state) => {
-      const { currentChannels, activeChannel } = state;
-      return { currentChannels, activeChannel };
+      const { currentChannels, activeChannel, activeChannelId } = state;
+      return { currentChannels, activeChannel, activeChannelId };
     },
-    delChannels: () => ({}),
+    addChannel: () => ({}),
+    delChannel: () => ({}),
   },
 });
 
