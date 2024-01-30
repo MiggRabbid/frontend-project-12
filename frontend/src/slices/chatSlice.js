@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const chatSlice = createSlice({
   name: 'chat',
   initialState: {
-    activeChat: null,
-    currentChats: null,
+    activeChat: [],
+    currentChats: [],
   },
   reducers: {
     setCurrentChats: (state, action) => ({
@@ -19,7 +19,7 @@ const chatSlice = createSlice({
       const activeChannelId = action.payload;
       if (activeChannelId === null || activeChannelId === undefined) {
         console.log('------------------------ setActiveChat end []');
-        return { ...state, activeChat: [] };
+        return { ...state };
       }
       const activeChat = currentChats.filter((chat) => chat.channelId === activeChannelId);
       console.log('activeChat     -', state.currentChats);
