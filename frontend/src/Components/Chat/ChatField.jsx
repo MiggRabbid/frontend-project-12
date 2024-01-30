@@ -5,12 +5,17 @@ import axios from 'axios';
 
 import { actions as chatActions } from '../../slices/chatSlice';
 
-const ChatField = ({ activeChannel, activeChannelId }) => {
+const ChatField = () => {
   console.log('------------------------ ChatField start');
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
-  console.log('activeChannel   -', activeChannel);
-  console.log('activeChannelId -', activeChannelId);
+  const activeChannel = useSelector((state) => state.channelReducer.activeChannel);
+  const activeChannelId = useSelector((state) => state.channelReducer.activeChannelId);
+  const activeChat = useSelector((state) => state.chatReducer.activeChat);
+
+  console.log('ChatField activeChannel   -', activeChannel);
+  console.log('ChatField activeChannelId -', activeChannelId);
+  console.log('ChatField activeChat      -', activeChat);
 
   useEffect(() => {
     async function fetchData() {
@@ -31,11 +36,11 @@ const ChatField = ({ activeChannel, activeChannelId }) => {
   }, []);
 
   useEffect(() => {
+    console.log('ChatField useEffect -');
+    console.log('ChatField activeChannelId -', activeChannelId);
     dispatch(chatActions.setActiveChat(activeChannelId));
   }, [activeChannelId]);
 
-  const activeChat = useSelector((state) => state.chatReducer.activeChat);
-  console.log('activeChat -', activeChat);
   console.log('------------------------ ChatField end');
   return (
     <div className="col p-0 h-100">
@@ -44,7 +49,7 @@ const ChatField = ({ activeChannel, activeChannelId }) => {
           <p className="m-0">
             <strong>
               {'# '}
-              {activeChannel}
+              {activeChat.length}
             </strong>
           </p>
           <span className="text-muted">
@@ -79,7 +84,7 @@ const ChatField = ({ activeChannel, activeChannelId }) => {
                     name="message"
                     aria-label="Новое сообщение"
                     placeholder="Введите сообщение..."
-                    className="border-0 p-0 ps-2 form-control"
+                    className="border-0 p-0 ps-2 me-1 form-control"
                   />
                   <button
                     type="submit"

@@ -17,12 +17,10 @@ const channelSlice = createSlice({
       ...state,
       activeChannel: action.payload,
     }),
-    getChannels: (state) => {
-      const { currentChannels, activeChannel, activeChannelId } = state;
-      return { currentChannels, activeChannel, activeChannelId };
-    },
-    addChannel: () => ({}),
-    delChannel: () => ({}),
+    setActiveChannelId: (state, action) => ({
+      ...state,
+      activeChannelId: action.payload,
+    }),
   },
 });
 
