@@ -2,23 +2,19 @@ import React from 'react';
 import cn from 'classnames';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as channelActions } from '../../Store/slices/channelSlice';
+import { actions as chatActions } from '../../slices/chatSlice';
 
 const ChatChannels = () => {
   const dispatch = useDispatch();
-  console.log('------------------------ ChatChannels --- start ---');
-  const currentChannels = useSelector((state) => state.channelReducer.currentChannels);
-  const activeChannel = useSelector((state) => state.channelReducer.activeChannel);
-  console.log('ChatChannels --- activeChannelId - ', activeChannel);
+
+  const currentChannels = useSelector((state) => state.chatReducer.currentChannels);
+  const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
 
   const handelChangeChanel = (event) => {
-    console.log('ChatChannels --- handelChangeChanel --- name - ', event.target.name);
-    console.log('ChatChannels --- handelChangeChanel --- id - ', event.target.id);
-    dispatch(channelActions.setActiveChanel(event.target.name));
-    dispatch(channelActions.setActiveChannelId(event.target.id));
+    dispatch(chatActions.setActiveChanel(event.target.name));
+    dispatch(chatActions.setActiveChannelId(event.target.id));
   };
 
-  console.log('------------------------ ChatChannels --- end ---');
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1  align-items-center justify-content-between mb-2 ps-4 pe-2 p-4">

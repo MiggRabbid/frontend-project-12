@@ -6,7 +6,7 @@ import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-import { actions as authActions } from '../../Store/slices/authSlice';
+import { actions as authActions } from '../../slices/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();

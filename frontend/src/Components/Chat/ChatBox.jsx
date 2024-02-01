@@ -4,7 +4,7 @@ import axios from 'axios';
 import ChatChannels from './ChatChannels';
 import ChatField from './ChatField';
 
-import { actions as channelActions } from '../../Store/slices/channelSlice';
+import { actions as chatActions } from '../../slices/chatSlice';
 
 const ChatBox = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const ChatBox = () => {
             Authorization: `Bearer ${user.token}`,
           },
         });
-        dispatch(channelActions.setCurrentChannels(response.data));
+        dispatch(chatActions.setCurrentChannels(response.data));
       } catch (e) {
         console.error(e);
       }
