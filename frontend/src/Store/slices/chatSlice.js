@@ -4,7 +4,7 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState: {
     activeChat: [],
-    currentChats: [],
+    allChats: [],
   },
   reducers: {
     setCurrentChats: (state, action) => ({
@@ -12,19 +12,17 @@ const chatSlice = createSlice({
       currentChats: action.payload,
     }),
     setActiveChat: (state, action) => {
-      console.log('------------------------ setActiveChat start');
-      console.log('payload        -', action.payload);
-      console.log('currentChats   -', state.currentChats);
-      const { currentChats } = state;
+      const { allChats } = state;
       const activeChannelId = action.payload;
       if (activeChannelId === null || activeChannelId === undefined) {
-        console.log('------------------------ setActiveChat end []');
         return { ...state };
       }
-      const activeChat = currentChats.filter((chat) => chat.channelId === activeChannelId);
-      console.log('activeChat     -', state.currentChats);
-      console.log('------------------------ setActiveChat end [...]');
+      const activeChat = allChats.filter((chat) => chat.channelId === activeChannelId);
       return { ...state, activeChat };
+    },
+    updateCurrentChats: (state, action) => {
+      const newMessage = action.payload;
+      return { ...state, allChats: [...state.allChats, newMessage] };
     },
   },
 });

@@ -3,30 +3,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 
-import { actions as chatActions } from '../../slices/chatSlice';
+import { actions as chatActions } from '../../Store/slices/chatSlice';
 
 const ChatField = () => {
-  console.log('------------------------ ChatField start');
+  console.log('------------------------ ChatField --- start ---');
   const dispatch = useDispatch();
-  const token = localStorage.getItem('token');
-  const activeChannel = useSelector((state) => state.channelReducer.activeChannel);
+
+  const user = JSON.parse(localStorage.getItem('user'));
   const activeChannelId = useSelector((state) => state.channelReducer.activeChannelId);
   const activeChat = useSelector((state) => state.chatReducer.activeChat);
-
-  console.log('ChatField activeChannel   -', activeChannel);
-  console.log('ChatField activeChannelId -', activeChannelId);
-  console.log('ChatField activeChat      -', activeChat);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        console.log('ChatField useEffect  try');
         const response = await axios.get('/api/v1/messages', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${user.token}`,
           },
         });
-        console.log('ChatField response -', response.data);
         dispatch(chatActions.setCurrentChats(response.data));
       } catch (e) {
         console.error(e);
@@ -36,12 +30,30 @@ const ChatField = () => {
   }, []);
 
   useEffect(() => {
-    console.log('ChatField useEffect -');
-    console.log('ChatField activeChannelId -', activeChannelId);
+    console.log('ChatField --- useEffect --- dispatch --- activeChannelId ---');
+    console.log('ChatField --- useEffect --- dispatch --- activeChannelId -', activeChannelId);
     dispatch(chatActions.setActiveChat(activeChannelId));
   }, [activeChannelId]);
 
-  console.log('------------------------ ChatField end');
+  const postMessage = async (message) => {
+    console.log('ChatField --- postMessage --- activeChannelId - ', activeChannelId);
+    const newMessage = {
+      body: message,
+      channelId: activeChannelId,
+      username: user.username,
+    };
+    try {
+      await axios.post('/api/v1/messages', newMessage, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  console.log('------------------------ ChatField --- end ---');
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
@@ -71,7 +83,7 @@ const ChatField = () => {
           <Formik
             initialValues={{ message: '' }}
             onSubmit={(values, actions) => {
-              console.log('Отправка сообщения:', values.message);
+              postMessage(values.message);
               actions.resetForm({ values: { message: '' } });
             }}
           >

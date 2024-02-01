@@ -6,22 +6,19 @@ import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-import { actions as authActions } from '../slices/authSlice';
+import { actions as authActions } from '../../Store/slices/authSlice';
 
 const Login = () => {
-  console.log('------------------------ Login start');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const passwordRef = useRef(null);
 
   const error = useSelector((state) => state.authReducer.error);
-  useEffect(() => {
-    const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
 
-    if (token) {
-      navigate('/chat');
-    }
-  });
+  useEffect(() => {
+    if (user) navigate('/');
+  }, []);
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Это поле обязательно'),
@@ -29,22 +26,15 @@ const Login = () => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
     try {
       setSubmitting(true);
       const response = await axios.post('/api/v1/login', values);
-      localStorage.setItem('token', response.data.token);
-      const action = {
-        token: response.data.token,
-        username: values.username,
-      };
-      dispatch(authActions.loginSuccess(action));
-      console.log('------------------------ Login end');
-      navigate('/chat');
+      localStorage.setItem('user', JSON.stringify(response.data));
+      dispatch(authActions.loginSuccess(response.data));
+      navigate('/');
     } catch (e) {
       console.error(e);
       dispatch(authActions.loginFailed(e.response.data));
-      console.log('------------------------ Login end');
     } finally {
       setSubmitting(false);
     }
