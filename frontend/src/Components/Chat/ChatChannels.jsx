@@ -2,23 +2,23 @@ import React from 'react';
 import cn from 'classnames';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as channelActions } from '../../slices/channelSlice';
+import { actions as channelActions } from '../../Store/slices/channelSlice';
 
 const ChatChannels = () => {
   const dispatch = useDispatch();
-
+  console.log('------------------------ ChatChannels --- start ---');
   const currentChannels = useSelector((state) => state.channelReducer.currentChannels);
   const activeChannel = useSelector((state) => state.channelReducer.activeChannel);
-  // console.log('------------------------ ChatChannels start');
-  // console.log('ChatChannels currentChannels -', currentChannels);
-  // console.log('ChatChannels activeChannel   -', activeChannel);
+  console.log('ChatChannels --- activeChannelId - ', activeChannel);
 
   const handelChangeChanel = (event) => {
+    console.log('ChatChannels --- handelChangeChanel --- name - ', event.target.name);
+    console.log('ChatChannels --- handelChangeChanel --- id - ', event.target.id);
     dispatch(channelActions.setActiveChanel(event.target.name));
     dispatch(channelActions.setActiveChannelId(event.target.id));
   };
 
-  // console.log('------------------------ ChatChannels end');
+  console.log('------------------------ ChatChannels --- end ---');
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1  align-items-center justify-content-between mb-2 ps-4 pe-2 p-4">
