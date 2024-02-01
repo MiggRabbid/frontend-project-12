@@ -11,6 +11,7 @@ const ChatField = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const activeChannelId = useSelector((state) => state.chatReducer.activeChannelId);
   const activeChat = useSelector((state) => state.chatReducer.activeChat);
+  const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
 
   useEffect(() => {
     async function fetchData() {
@@ -56,7 +57,7 @@ const ChatField = () => {
           <p className="m-0">
             <strong>
               {'# '}
-              {activeChat.length}
+              {activeChannel}
             </strong>
           </p>
           <span className="text-muted">
