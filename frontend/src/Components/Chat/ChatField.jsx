@@ -3,15 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 
-import { actions as chatActions } from '../../Store/slices/chatSlice';
+import { actions as chatActions } from '../../slices/chatSlice';
 
 const ChatField = () => {
-  console.log('------------------------ ChatField --- start ---');
   const dispatch = useDispatch();
 
   const user = JSON.parse(localStorage.getItem('user'));
-  const activeChannelId = useSelector((state) => state.channelReducer.activeChannelId);
+  const activeChannelId = useSelector((state) => state.chatReducer.activeChannelId);
   const activeChat = useSelector((state) => state.chatReducer.activeChat);
+  const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
 
   useEffect(() => {
     async function fetchData() {
@@ -30,13 +30,10 @@ const ChatField = () => {
   }, []);
 
   useEffect(() => {
-    console.log('ChatField --- useEffect --- dispatch --- activeChannelId ---');
-    console.log('ChatField --- useEffect --- dispatch --- activeChannelId -', activeChannelId);
     dispatch(chatActions.setActiveChat(activeChannelId));
   }, [activeChannelId]);
 
   const postMessage = async (message) => {
-    console.log('ChatField --- postMessage --- activeChannelId - ', activeChannelId);
     const newMessage = {
       body: message,
       channelId: activeChannelId,
@@ -53,7 +50,6 @@ const ChatField = () => {
     }
   };
 
-  console.log('------------------------ ChatField --- end ---');
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
@@ -61,7 +57,7 @@ const ChatField = () => {
           <p className="m-0">
             <strong>
               {'# '}
-              {activeChat.length}
+              {activeChannel}
             </strong>
           </p>
           <span className="text-muted">
