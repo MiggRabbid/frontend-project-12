@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { actions as authActions } from '../../slices/authSlice';
+import logoImg from '../../img/logo192-64.png';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,8 @@ const Header = () => {
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
-        <a className="navbar-brand" href="/">Hexlet Chat</a>
+        <img className="h-100 " style={{ width: 120 }} src={logoImg} alt="Logo" />
+        {/* <a className="navbar-brand" href="/">Hexlet Chat</a> */}
         {user && (
         <button
           type="button"

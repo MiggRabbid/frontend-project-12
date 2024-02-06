@@ -7,6 +7,7 @@ import axios from 'axios';
 import * as Yup from 'yup';
 
 import { actions as authActions } from '../../slices/authSlice';
+import logo from '../../img/logo800-800.png';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ const Login = () => {
         <div className="col-12 col-md-8 col-xxl-6">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
+              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center position-relative">
+                <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
+              </div>
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={validationSchema}

@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
 
-import App from './Components/App';
+import App from './App';
 import reducer, { actions } from './slices/index';
 
 const initApp = () => {
