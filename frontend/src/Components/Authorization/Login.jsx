@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { Overlay } from 'react-bootstrap';
+import React, { useRef, useEffect } from 'react';
+import {
+  Button, Overlay, FloatingLabel, Form,
+} from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
+import { useFormik } from 'formik';
 import axios from 'axios';
-import * as Yup from 'yup';
 
 import { actions as authActions } from '../../slices/authSlice';
 import logo from '../../img/logo800-800.png';
@@ -13,33 +14,38 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const passwordRef = useRef(null);
+  const usernameRef = useRef();
 
   const error = useSelector((state) => state.authReducer.error);
   const user = JSON.parse(localStorage.getItem('user'));
+
+  const formik = useFormik({
+    initialValues: { username: '', password: '' },
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true);
+      axios.post('/api/v1/login', values)
+        .then((response) => {
+          localStorage.setItem('user', JSON.stringify(response.data));
+          dispatch(authActions.loginSuccess(response.data));
+          navigate('/');
+        })
+        .catch((e) => {
+          dispatch(authActions.loginFailed(e.response.data));
+          console.error(e);
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    },
+  });
 
   useEffect(() => {
     if (user) navigate('/');
   }, []);
 
-  const validationSchema = Yup.object().shape({
-    username: Yup.string().required('Это поле обязательно'),
-    password: Yup.string().required('Это поле обязательно'),
-  });
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      setSubmitting(true);
-      const response = await axios.post('/api/v1/login', values);
-      localStorage.setItem('user', JSON.stringify(response.data));
-      dispatch(authActions.loginSuccess(response.data));
-      navigate('/');
-    } catch (e) {
-      console.error(e);
-      dispatch(authActions.loginFailed(e.response.data));
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
 
   return (
     <div className="container-fluid h-100">
@@ -50,65 +56,72 @@ const Login = () => {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center position-relative">
                 <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
               </div>
-              <Formik
-                initialValues={{ username: '', password: '' }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-              >
-                <Form className="col-12 col-md-6 mt-3 mt-mb-0">
-                  <h1 className="text-center mb-4">Войти</h1>
-                  <div className="form-floating mb-3">
-                    <Field
+              <Form className="col-12 col-md-6 mt-3 mt-mb-0 d-grid gap-2" onSubmit={formik.handleSubmit}>
+                <div className="form-floating mb-4">
+                  <FloatingLabel htmlFor="usernameInput" label="Ваш ник" className="mb-3">
+                    <Form.Control
                       type="text"
-                      id="username"
+                      id="usernameInput"
                       name="username"
-                      label="username"
                       placeholder="Ваш ник"
                       className="form-control"
+                      autoComplete="username"
+                      ref={usernameRef}
+                      value={formik.values.username}
+                      onChange={formik.handleChange}
                     />
-                  </div>
-                  <div className="form-floating mb-4">
-                    <Field
+                  </FloatingLabel>
+                </div>
+                <div className="form-floating mb-4">
+                  <FloatingLabel htmlFor="passwordInput" label="Пароль" className="mb-4">
+                    <Form.Control
                       type="password"
-                      id="password"
+                      id="passwordInput"
                       name="password"
-                      label="password"
                       placeholder="Пароль"
                       className="form-control"
-                      innerRef={passwordRef}
+                      autoComplete="current-password"
+                      ref={passwordRef}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
                     />
-                    <Overlay
-                      target={passwordRef.current}
-                      show={error !== null}
-                      placement="bottom"
-                    >
-                      {({
-                        placement, arrowProps, show: _show, ...props
-                      }) => (
-                        <div
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                          {...props}
-                          id="div-error"
-                          className="invalid-div"
-                          style={{
-                            position: 'absolute',
-                            backgroundColor: 'rgba(255, 100, 100, 0.85)',
-                            padding: '2px 10px',
-                            color: 'white',
-                            borderRadius: 3,
-                            ...props.style,
-                          }}
-                        >
-                          Неверные имя пользователя или пароль
-                        </div>
-                      )}
-                    </Overlay>
-                  </div>
-                  <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
-                    Войти
-                  </button>
-                </Form>
-              </Formik>
+                  </FloatingLabel>
+                  <Overlay
+                    target={passwordRef.current}
+                    show={error !== null}
+                    placement="bottom"
+                  >
+                    {({
+                      placement: _placement,
+                      show: _show,
+                      arrowProps: _arrowProps,
+                      popper: _popper,
+                      hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                      ...props
+                    }) => (
+                      <div
+                          // eslint-disable-next-line react/jsx-props-no-spreading
+                        {...props}
+                        id="div-error"
+                        className="invalid-div"
+                        style={{
+                          position: 'absolute',
+                          backgroundColor: 'rgba(255, 100, 100, 0.85)',
+                          padding: '2px 10px',
+                          color: 'white',
+                          borderRadius: 3,
+                          ...props.style,
+                        }}
+                      >
+                        Неверные имя пользователя или пароль
+                      </div>
+                    )}
+                  </Overlay>
+                </div>
+                <Button type="submit" variant="primary" size="lg">
+                  Войти
+                </Button>
+              </Form>
             </div>
           </div>
         </div>

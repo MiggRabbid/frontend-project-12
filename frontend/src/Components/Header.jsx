@@ -1,9 +1,10 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { actions as authActions } from '../../slices/authSlice';
-import logoImg from '../../img/logo192-64.png';
+import { actions as authActions } from '../slices/authSlice';
+import logoImg from '../img/logo192-64.png';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -20,15 +21,14 @@ const Header = () => {
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
         <img className="h-100 " style={{ width: 120 }} src={logoImg} alt="Logo" />
-        {/* <a className="navbar-brand" href="/">Hexlet Chat</a> */}
         {user && (
-        <button
-          type="button"
-          className="btn btn-primary"
+        <Button
+          type="submit"
+          variant="primary"
           onClick={handleLogout}
         >
           выйти
-        </button>
+        </Button>
         )}
       </div>
     </nav>

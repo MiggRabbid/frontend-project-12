@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {
@@ -19,13 +20,12 @@ const NotFound = () => {
           Но вы можете перейти на главную страницу
         </p>
         <br />
-        <button
-          type="submit"
-          className="btn btn-group-vertical btn-outline-dark me-1"
+        <Button
+          variant="outline-dark"
           onClick={handleGoHome}
         >
           Вернуться
-        </button>
+        </Button>
       </div>
     </div>
   );
