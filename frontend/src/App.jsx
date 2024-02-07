@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Header from './Components/Main/Header';
-import Home from './Components/Main/Home';
+import Header from './Components/Header';
+import Home from './Components/Home';
 import Login from './Components/Authorization/Login';
-import NotFound from './Components/Main/NotFound';
+import NotFound from './Components/NotFound';
 
 const App = () => (
   <Router>

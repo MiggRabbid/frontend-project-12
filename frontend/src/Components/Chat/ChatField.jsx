@@ -1,54 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { Form, InputGroup, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { Formik, Field, Form } from 'formik';
+import { useFormik } from 'formik';
 import axios from 'axios';
 
 import { actions as chatActions } from '../../slices/chatSlice';
 
 const ChatField = () => {
   const dispatch = useDispatch();
+  const messageRef = useRef();
 
   const user = JSON.parse(localStorage.getItem('user'));
   const activeChannelId = useSelector((state) => state.chatReducer.activeChannelId);
   const activeChat = useSelector((state) => state.chatReducer.activeChat);
   const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get('/api/v1/messages', {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+  const formik = useFormik({
+    initialValues: { message: '' },
+    onSubmit: (values, actions) => {
+      const newMessage = {
+        body: values.message,
+        channelId: activeChannelId,
+        username: user.username,
+      };
+      axios.post('/api/v1/messages', newMessage, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          actions.resetForm({ values: { message: '' } });
         });
-        dispatch(chatActions.setCurrentChats(response.data));
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    fetchData();
-  }, []);
+    },
+  });
+
+  useEffect(() => {
+    messageRef.current.focus();
+  }, [activeChannelId]);
 
   useEffect(() => {
     dispatch(chatActions.setActiveChat(activeChannelId));
   }, [activeChannelId]);
-
-  const postMessage = async (message) => {
-    const newMessage = {
-      body: message,
-      channelId: activeChannelId,
-      username: user.username,
-    };
-    try {
-      await axios.post('/api/v1/messages', newMessage, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   return (
     <div className="col p-0 h-100">
@@ -76,36 +71,31 @@ const ChatField = () => {
           ))}
         </div>
         <div className="mt-auto px-5 py-3">
-          <Formik
-            initialValues={{ message: '' }}
-            onSubmit={(values, actions) => {
-              postMessage(values.message);
-              actions.resetForm({ values: { message: '' } });
-            }}
-          >
-            {({ values }) => (
-              <Form className="py-1 border rounded-2">
-                <div className="input-group has-validation">
-                  <Field
-                    type="text"
-                    id="message"
-                    name="message"
-                    aria-label="Новое сообщение"
-                    placeholder="Введите сообщение..."
-                    className="border-0 p-0 ps-2 me-1 form-control"
-                  />
-                  <button
-                    type="submit"
-                    className="btn btn-group-vertical btn-outline-dark me-1"
-                    disabled={values.message.trim() === ''}
-                  >
-                    {'>'}
-                    <span className="visually-hidden">Отправить</span>
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+          <Form className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
+            <InputGroup>
+              <Form.Control
+                ref={messageRef}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.message}
+                id="message"
+                name="message"
+                aria-label="Новое сообщение"
+                placeholder="Введите сообщение..."
+                className="border-0 p-0 ps-2"
+              />
+              <Button
+                type="submit"
+                variant="light"
+                disabled={formik.values.message.trim() === ''}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 16 16">
+                  <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
+                </svg>
+                <span className="visually-hidden">Отправить</span>
+              </Button>
+            </InputGroup>
+          </Form>
         </div>
       </div>
     </div>
