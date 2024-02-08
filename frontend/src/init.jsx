@@ -1,9 +1,8 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
 
-import App from './App';
+import App from './Components/App';
 import reducer, { actions } from './slices/index';
 
 const initApp = () => {
@@ -16,9 +15,19 @@ const initApp = () => {
     store.dispatch(actions.updateCurrentChats(newMessage));
   });
 
-  document.querySelector('html').classList.add('h-100');
-  document.querySelector('body').classList.add('h-100', 'bg-light');
-  document.querySelector('#root').classList.add('h-100');
+  socket.on('newChannel', (newChannel) => {
+    store.dispatch(actions.updateCurrentChannels(newChannel));
+    store.dispatch(actions.setActiveChanel(newChannel.name));
+    store.dispatch(actions.setActiveChannelId(newChannel.id));
+  });
+
+  socket.on('renameChannel', (newChannel) => {
+    store.dispatch(actions.renameChannel(newChannel));
+  });
+
+  socket.on('removeChannel', (remoteChannel) => {
+    store.dispatch(actions.removeChannel(remoteChannel));
+  });
 
   return (
     <Provider store={store}>

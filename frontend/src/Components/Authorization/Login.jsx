@@ -22,6 +22,7 @@ const Login = () => {
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     onSubmit: (values, { setSubmitting }) => {
+      console.log('Login values -', values);
       setSubmitting(true);
       axios.post('/api/v1/login', values)
         .then((response) => {
@@ -48,6 +49,7 @@ const Login = () => {
   }, []);
 
   return (
+    !user && (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
         <div className="col-12 col-md-8 col-xxl-6">
@@ -56,7 +58,8 @@ const Login = () => {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center position-relative">
                 <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
               </div>
-              <Form className="col-12 col-md-6 mt-3 mt-mb-0 d-grid gap-2" onSubmit={formik.handleSubmit}>
+              <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
+                <h1 className="text-center mb-4">Войти</h1>
                 <div className="form-floating mb-4">
                   <FloatingLabel htmlFor="usernameInput" label="Ваш ник" className="mb-3">
                     <Form.Control
@@ -118,7 +121,7 @@ const Login = () => {
                     )}
                   </Overlay>
                 </div>
-                <Button type="submit" variant="primary" size="lg">
+                <Button type="submit" variant="outline-primary" className="w-100 mb-3">
                   Войти
                 </Button>
               </Form>
@@ -126,8 +129,8 @@ const Login = () => {
           </div>
         </div>
       </div>
-
     </div>
+    )
   );
 };
 
