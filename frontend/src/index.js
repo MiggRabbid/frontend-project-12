@@ -11,5 +11,11 @@ const app = async () => {
   root.render(<React.StrictMode>{vdom}</React.StrictMode>);
 };
 
+// const app = async () => {
+//   const root = ReactDOM.createRoot(document.getElementById('root'));
+//   const vdom = await initApp();
+//   root.render(vdom);
+// };
+
 app();
 reportWebVitals();

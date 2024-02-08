@@ -10,7 +10,7 @@ const Home = () => {
     if (!user) navigate('/login');
   }, []);
 
-  return <ChatPage />;
+  return user && <ChatPage />;
 };
 
 export default Home;

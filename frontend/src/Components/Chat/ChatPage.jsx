@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import ChannelsField from './ChannelsField';
-import ChatField from './ChatField';
 
 import { actions as chatActions } from '../../slices/chatSlice';
+
+import ChannelsField from './ChannelsField';
+import ChatField from './ChatField';
 
 const ChatPage = () => {
   const dispatch = useDispatch();

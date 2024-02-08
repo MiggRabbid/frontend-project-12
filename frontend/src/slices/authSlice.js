@@ -30,7 +30,6 @@ const authSlice = createSlice({
       username: null,
       error: null,
     }),
-    getUserName: (state) => (state.username),
   },
 });
 
