@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import {
-  Button, Overlay, FloatingLabel, Form,
+  Button, FloatingLabel, Form,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -60,71 +60,48 @@ const Login = () => {
               </div>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">Войти</h1>
-                <div className="form-floating mb-4">
-                  <FloatingLabel htmlFor="usernameInput" label="Ваш ник" className="mb-3">
+                <Form.Group>
+                  <FloatingLabel htmlFor="usernameInput" controlId="username" label="Ваш ник" className="mb-3">
                     <Form.Control
                       type="text"
-                      id="usernameInput"
                       name="username"
                       placeholder="Ваш ник"
-                      className="form-control"
                       autoComplete="username"
+                      required
                       ref={usernameRef}
                       value={formik.values.username}
                       onChange={formik.handleChange}
                     />
                   </FloatingLabel>
-                </div>
-                <div className="form-floating mb-4">
-                  <FloatingLabel htmlFor="passwordInput" label="Пароль" className="mb-4">
+                </Form.Group>
+                <Form.Group>
+                  <FloatingLabel htmlFor="passwordInput" controlId="password" label="Пароль" className="mb-4">
                     <Form.Control
                       type="password"
-                      id="passwordInput"
                       name="password"
                       placeholder="Пароль"
                       className="form-control"
                       autoComplete="current-password"
+                      required
                       ref={passwordRef}
                       value={formik.values.password}
                       onChange={formik.handleChange}
+                      isInvalid={!!error}
                     />
+                    <Form.Control.Feedback type="invalid" tooltip>Неверные имя пользователя или пароль</Form.Control.Feedback>
                   </FloatingLabel>
-                  <Overlay
-                    target={passwordRef.current}
-                    show={error !== null}
-                    placement="bottom"
-                  >
-                    {({
-                      placement: _placement,
-                      show: _show,
-                      arrowProps: _arrowProps,
-                      popper: _popper,
-                      hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                      ...props
-                    }) => (
-                      <div
-                          // eslint-disable-next-line react/jsx-props-no-spreading
-                        {...props}
-                        id="div-error"
-                        className="invalid-div"
-                        style={{
-                          position: 'absolute',
-                          backgroundColor: 'rgba(255, 100, 100, 0.85)',
-                          padding: '2px 10px',
-                          color: 'white',
-                          borderRadius: 3,
-                          ...props.style,
-                        }}
-                      >
-                        Неверные имя пользователя или пароль
-                      </div>
-                    )}
-                  </Overlay>
-                </div>
+                </Form.Group>
+
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">
                   Войти
                 </Button>
               </Form>
+            </div>
+            <div className="card-footer p-4">
+              <div className="text-center">
+                <span>{'Нет аккаунта? '}</span>
+                <a href="/signup">Регистрация</a>
+              </div>
             </div>
           </div>
         </div>

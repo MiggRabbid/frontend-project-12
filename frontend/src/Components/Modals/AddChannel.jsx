@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
@@ -8,6 +9,13 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { actions as modalActions } from '../../slices/modalSlice';
+
+const validationSchema = yup.object({
+  newChannelName: yup.string()
+    .min(3, 'Имя канала должно содержать не менее 3 символов')
+    .max(20, 'Имя канала должно содержать не более 20 символов')
+    .required('Поле обязательно для заполнения'),
+});
 
 const AddModal = () => {
   const dispatch = useDispatch();
@@ -17,6 +25,7 @@ const AddModal = () => {
 
   const formik = useFormik({
     initialValues: { newChannelName: '' },
+    validationSchema,
     onSubmit: (values) => {
       const newChannel = { name: values.newChannelName };
 
@@ -53,7 +62,11 @@ const AddModal = () => {
             id="newChannelName"
             name="newChannelName"
             placeholder="Введите название канала (от 3 до 20 символов)"
+            isInvalid={formik.touched.newChannelName && formik.errors.newChannelName}
           />
+          <Form.Control.Feedback type="invalid">
+            {formik.errors.newChannelName}
+          </Form.Control.Feedback>
           <div className="mt-3 d-flex justify-content-end">
             <Button
               onClick={() => dispatch(modalActions.closedModal())}
