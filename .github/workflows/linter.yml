@@ -21,16 +21,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install ESLint
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install ESLint for frontend
         run: |
-          npm install eslint
-          npm install eslint-config-airbnb-base
-          npm install eslint-plugin-import
-          npm install eslint-plugin-functional
-          npm install eslint-plugin-jsx-a11y
-          npm install eslint-plugin-react
-          npm install  eslint-plugin-react-hooks
+          npm install eslint -C frontend
+          npm install eslint-plugin-import -C frontend
+          npm install eslint-plugin-functional -C frontend
+          npm install eslint-plugin-jsx-a11y -C frontend
+          npm install eslint-plugin-react -C frontend
+          npm install eslint-plugin-react-hooks -C frontend
 
       - name: Run ESLint
-        run: cd frontend && npx eslint .
+        run: make lint-frontend
         continue-on-error: true
