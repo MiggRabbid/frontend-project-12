@@ -1,15 +1,32 @@
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
-
-import App from './Components/App';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import * as yup from 'yup';
 import reducer, { actions } from './slices/index';
+import App from './Components/App';
+import locale from './locales/locale';
+import resources from './locales/index';
 
-const initApp = () => {
-  const socket = io();
+const initApp = async () => {
+  const defaultLanguage = 'ru';
+  const i18nextInstance = await i18n.createInstance();
   const store = configureStore({
     reducer,
   });
+  const socket = io();
+
+  await i18nextInstance.use(initReactI18next).init({
+    lng: defaultLanguage,
+    resources,
+  });
+
+  const setYupLocale = () => {
+    yup.setLocale(locale);
+  };
+
+  setYupLocale(i18nextInstance);
 
   socket.on('newMessage', (newMessage) => {
     store.dispatch(actions.updateCurrentChats(newMessage));

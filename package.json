@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/MiggRabbid/frontend-project-12#readme",
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.0"
+    "@hexlet/chat-server": "^2.0.0",
+    "react-i18next": "^14.0.5"
   }
 }

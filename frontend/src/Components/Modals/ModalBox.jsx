@@ -7,17 +7,17 @@ import AddChannel from './AddChannel';
 import RemoveChannel from './RemoveChannel';
 import RenameChannel from './RenameChannel';
 
+const mappingModal = {
+  addChannel: AddChannel,
+  removeChannel: RemoveChannel,
+  renameChannel: RenameChannel,
+};
+
 const ModalBox = () => {
   const dispatch = useDispatch();
 
   const modalState = useSelector((state) => state.modalReducer.show);
   const modalType = useSelector((state) => state.modalReducer.modalType);
-
-  const mappingModal = {
-    addChannel: AddChannel,
-    removeChannel: RemoveChannel,
-    renameChannel: RenameChannel,
-  };
 
   const CurrentModal = mappingModal[modalType];
 
