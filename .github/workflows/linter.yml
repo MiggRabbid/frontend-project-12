@@ -29,7 +29,7 @@ jobs:
           npm install eslint-plugin-functional
           npm install eslint-plugin-jsx-a11y
           npm install eslint-plugin-react
-          npminstall  eslint-plugin-react-hooks
+          npm install  eslint-plugin-react-hooks
 
       - name: Run ESLint
         run: cd frontend && npx eslint .
