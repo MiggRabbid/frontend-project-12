@@ -1,6 +1,7 @@
-### Hexlet tests and linter status
-
+### Hexlet tests, linter status and Maintainability from Codeclimate.com::
 [![Actions Status](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/MiggRabbid/frontend-project-12/actions)
+[![ESLint check](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/linter.yml/badge.svg)](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/linter.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/79a34c1604286747d0f1/maintainability)](https://codeclimate.com/github/MiggRabbid/frontend-project-12/maintainability)
 
 ---
 # Чат (Slack)
