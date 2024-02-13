@@ -3,14 +3,13 @@ import Modal from 'react-bootstrap/Modal';
 
 import { actions as modalActions } from '../../slices/modalSlice';
 
-import AddChannel from './AddChannel';
+import AddAndRenameChannel from './AddAndRenameChannel';
 import RemoveChannel from './RemoveChannel';
-import RenameChannel from './RenameChannel';
 
 const mappingModal = {
-  addChannel: AddChannel,
+  addChannel: AddAndRenameChannel,
+  renameChannel: AddAndRenameChannel,
   removeChannel: RemoveChannel,
-  renameChannel: RenameChannel,
 };
 
 const ModalBox = () => {
@@ -27,7 +26,7 @@ const ModalBox = () => {
       onHide={() => dispatch(modalActions.closedModal())}
       dialogClassName="modal-dialog-centered"
     >
-      {CurrentModal && <CurrentModal />}
+      {CurrentModal && <CurrentModal modalType={modalType} />}
     </Modal>
   );
 };

@@ -2,7 +2,7 @@ export default {
   translation: {
     header: {
       logoText: 'Hexlet Chat',
-      button: 'выйти',
+      button: 'Выйти',
     },
     authorization: {
       login: {
@@ -39,13 +39,6 @@ export default {
           label: 'Подтвердите пароль',
           placeholder: 'Пароли должны совпадать',
         },
-        errors: {
-          invalidNameLength: 'от 3 до 20 символов',
-          invalidPassLength: 'Не менее 6 символов',
-          invalidPassConfirm: 'Пароли должны совпадать',
-          required: 'Обязательное полe',
-          thisUserExists: 'Такой пользователь уже существует',
-        },
       },
     },
     chatPage: {
@@ -62,7 +55,7 @@ export default {
         messageCount: {
           counter: {
             count_one: '{{count}} сообщение',
-            count_few: '{{count}} сообщений',
+            count_few: '{{count}} сообщения',
             count_many: '{{count}} сообщений',
           },
         },
@@ -75,15 +68,11 @@ export default {
     },
     modals: {
       addAndRename: {
-        addTitle: 'Добавить канал',
-        renameTitle: 'Переименовать канал',
+        addChannel: 'Добавить канал',
+        renameChannel: 'Переименовать канал',
         inputPlaceholder: 'Введите название канала (от 3 до 20 символов)',
         button: 'Отправить',
-        errors: {
-          invalidLength: 'От 3 до 20 символов',
-          required: 'Обязательное поле',
-          thisNameExists: 'Должно быть уникальны',
-        },
+
       },
       delete: {
         title: 'Удалить канал',
@@ -98,6 +87,14 @@ export default {
       notFound: 'Страница не найдена',
       goOut: 'Но вы можете перейти на главную страницу',
       button: 'Вернуться',
+    },
+    validationError: {
+      wronglengthName: 'от 3 до 20 символов',
+      wronglengthPass: 'Не менее 6 символов',
+      invalidPassConfirm: 'Пароли должны совпадать',
+      requiredField: 'Обязательное полe',
+      thisUserExists: 'Такой пользователь уже существует',
+      thisNameExists: 'Должно быть уникальны',
     },
   },
 };

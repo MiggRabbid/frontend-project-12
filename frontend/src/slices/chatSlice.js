@@ -59,7 +59,6 @@ const chatSlice = createSlice({
       const { currentChannels, activeChannelId } = state;
       const deletedId = actions.payload.id;
       const updatedChannels = currentChannels.filter((channels) => channels.id !== deletedId);
-
       if (deletedId === activeChannelId) {
         return {
           ...state,
@@ -67,7 +66,6 @@ const chatSlice = createSlice({
           activeChannel: 'general',
         };
       }
-
       return {
         ...state,
         currentChannels: updatedChannels,

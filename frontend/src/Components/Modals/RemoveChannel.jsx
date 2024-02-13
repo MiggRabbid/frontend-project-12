@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
@@ -8,6 +9,7 @@ import { actions as modalActions } from '../../slices/modalSlice';
 
 const AddModal = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const changeableСhannelId = useSelector((state) => state.modalReducer.changeableСhannelId);
   const user = JSON.parse(localStorage.getItem('user'));
@@ -30,17 +32,17 @@ const AddModal = () => {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.delete.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modals.delete.body')}</p>
         <div className="mt-3 d-flex justify-content-end">
           <Button
             onClick={() => dispatch(modalActions.closedModal())}
             variant="secondary"
             className="me-2"
           >
-            Отменить
+            {t('modals.cancelButton')}
           </Button>
           {' '}
           <Button
@@ -48,7 +50,7 @@ const AddModal = () => {
             variant="danger"
             onClick={handleRemoveButton}
           >
-            удалить
+            {t('modals.delete.button')}
           </Button>
         </div>
 
