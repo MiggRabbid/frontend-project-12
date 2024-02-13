@@ -12,7 +12,7 @@ import logo from '../../img/logo800-800.png';
 import { actions as authActions } from '../../slices/authSlice';
 
 const validationSchema = yup.object({
-  username: yup.string()
+  username: yup.string().trim()
     .min(3, 'от 3 до 20 символов')
     .max(20, 'от 3 до 20 символов')
     .required('Обязательное поле'),
@@ -71,7 +71,7 @@ const SignUp = () => {
                 <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
               </div>
               <Form className="w-50" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">Регистрация</h1>
                 <Form.Group>
                   <FloatingLabel htmlFor="username" controlId="username" label="Имя пользователя" className="mb-3">
                     <Form.Control

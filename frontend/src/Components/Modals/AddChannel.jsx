@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
@@ -10,22 +10,25 @@ import Form from 'react-bootstrap/Form';
 
 import { actions as modalActions } from '../../slices/modalSlice';
 
-const validationSchema = yup.object({
-  newChannelName: yup.string()
-    .min(3, 'Имя канала должно содержать не менее 3 символов')
-    .max(20, 'Имя канала должно содержать не более 20 символов')
-    .required('Поле обязательно для заполнения'),
+const getValidationSchema = (currentChannels) => yup.object({
+  newChannelName: yup.string().trim()
+    .min(3, 'От 3 до 20 символов')
+    .max(20, 'От 3 до 20 символов')
+    .required('Обязательное поле')
+    .notOneOf(currentChannels, 'Должно быть уникальным'),
 });
 
 const AddModal = () => {
   const dispatch = useDispatch();
   const inputRef = useRef();
 
+  const currentChannels = useSelector((state) => state.chatReducer.currentChannels)
+    .map((channel) => channel.name);
   const user = JSON.parse(localStorage.getItem('user'));
 
   const formik = useFormik({
     initialValues: { newChannelName: '' },
-    validationSchema,
+    validationSchema: getValidationSchema(currentChannels),
     onSubmit: (values) => {
       const newChannel = { name: values.newChannelName };
 
@@ -44,6 +47,7 @@ const AddModal = () => {
   });
 
   useEffect(() => {
+    console.log('currentChannels -', JSON.stringify(currentChannels));
     inputRef.current.focus();
   }, []);
 
@@ -71,6 +75,7 @@ const AddModal = () => {
             <Button
               onClick={() => dispatch(modalActions.closedModal())}
               variant="secondary"
+              className="me-2"
             >
               Отменить
             </Button>

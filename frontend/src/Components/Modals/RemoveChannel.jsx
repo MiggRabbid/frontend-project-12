@@ -33,10 +33,12 @@ const AddModal = () => {
         <Modal.Title>Добавить канал</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <p className="lead">Уверены?</p>
         <div className="mt-3 d-flex justify-content-end">
           <Button
             onClick={() => dispatch(modalActions.closedModal())}
             variant="secondary"
+            className="me-2"
           >
             Отменить
           </Button>
