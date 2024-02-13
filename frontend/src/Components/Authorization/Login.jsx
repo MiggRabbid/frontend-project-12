@@ -5,6 +5,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 import { actions as authActions } from '../../slices/authSlice';
@@ -13,6 +14,7 @@ import logo from '../../img/logo800-800.png';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const passwordRef = useRef(null);
   const usernameRef = useRef();
 
@@ -59,13 +61,18 @@ const Login = () => {
                 <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
               </div>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('authorization.login.title')}</h1>
                 <Form.Group>
-                  <FloatingLabel htmlFor="usernameInput" controlId="username" label="Ваш ник" className="mb-3">
+                  <FloatingLabel
+                    htmlFor="usernameInput"
+                    controlId="username"
+                    label={t('authorization.login.inputName.label')}
+                    className="mb-3"
+                  >
                     <Form.Control
                       type="text"
                       name="username"
-                      placeholder="Ваш ник"
+                      placeholder={t('authorization.login.inputName.placeholder')}
                       autoComplete="username"
                       required
                       ref={usernameRef}
@@ -75,11 +82,11 @@ const Login = () => {
                   </FloatingLabel>
                 </Form.Group>
                 <Form.Group>
-                  <FloatingLabel htmlFor="passwordInput" controlId="password" label="Пароль" className="mb-4">
+                  <FloatingLabel htmlFor="passwordInput" controlId="password" label={t('authorization.login.inputPass.label')} className="mb-4">
                     <Form.Control
                       type="password"
                       name="password"
-                      placeholder="Пароль"
+                      placeholder={t('authorization.login.inputPass.placeholder')}
                       className="form-control"
                       autoComplete="current-password"
                       required
@@ -88,19 +95,19 @@ const Login = () => {
                       onChange={formik.handleChange}
                       isInvalid={!!error}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>Неверные имя пользователя или пароль</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{t('authorization.login.errors.invalidNameOrPass')}</Form.Control.Feedback>
                   </FloatingLabel>
                 </Form.Group>
 
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">
-                  Войти
+                  {t('authorization.login.button')}
                 </Button>
               </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{'Нет аккаунта? '}</span>
-                <a href="/signup">Регистрация</a>
+                <span>{t('authorization.login.footer.text')}</span>
+                <a href="/signup">{t('authorization.login.footer.link')}</a>
               </div>
             </div>
           </div>

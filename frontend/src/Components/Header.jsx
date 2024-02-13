@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { actions as authActions } from '../slices/authSlice';
 import logoImg from '../img/logo120-40.png';
@@ -9,6 +10,8 @@ import logoImg from '../img/logo120-40.png';
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleLogout = () => {
@@ -21,7 +24,7 @@ const Header = () => {
     <Navbar expand="lg" className="shadow-sm bg-white">
       <div className="container">
         <Navbar.Brand href="/">
-          <span className="visually-hidden">Hexlet Chat</span>
+          <span className="visually-hidden">{t('header.logoText')}</span>
           <img src={logoImg} alt="Logo" />
         </Navbar.Brand>
         {user && (
@@ -30,7 +33,7 @@ const Header = () => {
           variant="primary"
           onClick={handleLogout}
         >
-          выйти
+          {t('header.button')}
         </Button>
         )}
       </div>

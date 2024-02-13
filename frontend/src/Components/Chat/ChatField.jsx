@@ -1,13 +1,17 @@
 import React, { useRef, useEffect } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
+import { ChevronRight } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import * as yup from 'yup';
 
 import { actions as chatActions } from '../../slices/chatSlice';
 
 const ChatField = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const messageRef = useRef();
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -15,8 +19,16 @@ const ChatField = () => {
   const activeChat = useSelector((state) => state.chatReducer.activeChat);
   const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
 
+  const validationSchema = yup.object().shape({
+    message: yup
+      .string()
+      .trim()
+      .required(t('validationError.requiredField')),
+  });
+
   const formik = useFormik({
     initialValues: { message: '' },
+    validationSchema,
     onSubmit: (values, actions) => {
       const newMessage = {
         body: values.message,
@@ -45,20 +57,20 @@ const ChatField = () => {
     dispatch(chatActions.setActiveChat(activeChannelId));
   }, [activeChannelId]);
 
+  const isValidInput = !formik.dirty || !formik.isValid;
+
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
             <strong>
-              {'# '}
+              {t('chatPage.chatField.prefix')}
               {activeChannel}
             </strong>
           </p>
           <span className="text-muted">
-            { activeChat.length }
-            {' '}
-            сообщения
+            {t('chatPage.chatField.messageCount.counter.count', { count: activeChat.length })}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
@@ -71,28 +83,28 @@ const ChatField = () => {
           ))}
         </div>
         <div className="mt-auto px-5 py-3">
-          <Form className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
-            <InputGroup>
+          <Form noValidate className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
+            <InputGroup hasValidation={isValidInput}>
               <Form.Control
                 ref={messageRef}
+                id="message"
+                name="message"
+                className="border-0 p-0 ps-2"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.message}
-                id="message"
-                name="message"
-                aria-label="Новое сообщение"
-                placeholder="Введите сообщение..."
-                className="border-0 p-0 ps-2"
+                disabled={formik.isSubmitting}
+                aria-label={t('chatPage.chatField.messageInput.lable')}
+                placeholder={t('chatPage.chatField.messageInput.placeholder')}
               />
               <Button
                 type="submit"
-                variant="light"
-                disabled={formik.values.message.trim() === ''}
+                variant="group-vertical"
+                className="border-0"
+                disabled={isValidInput}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 16 16">
-                  <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
-                </svg>
-                <span className="visually-hidden">Отправить</span>
+                <ChevronRight size={20} />
+                <span className="visually-hidden">{t('chatPage.chatField.sendButton')}</span>
               </Button>
             </InputGroup>
           </Form>

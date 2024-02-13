@@ -5,27 +5,29 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import axios from 'axios';
 
-import logo from '../../img/logo800-800.png';
 import { actions as authActions } from '../../slices/authSlice';
+import logo from '../../img/logo800-800.png';
 
-const validationSchema = yup.object({
-  username: yup.string()
-    .min(3, 'от 3 до 20 символов')
-    .max(20, 'от 3 до 20 символов')
-    .required('Обязательное поле'),
+const getValidationSchema = (t) => yup.object({
+  username: yup.string().trim()
+    .min(3, t('validationError.wronglengthName'))
+    .max(20, t('validationError.wronglengthName'))
+    .required(t('validationError.requiredField')),
   password: yup.string()
-    .min(6, 'Не менее 6 символов')
-    .required('Обязательное поле'),
+    .min(6, t('validationError.wronglengthPass'))
+    .required(t('validationError.requiredField')),
   confirmPassword: yup.string()
-    .oneOf([yup.ref('password'), null], 'Пароли должны совпадать'),
+    .oneOf([yup.ref('password'), null], t('validationError.thisNameExists')),
 });
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const usernameRef = useRef();
   const passwordRef = useRef();
   const confirmPassword = useRef();
@@ -33,10 +35,9 @@ const SignUp = () => {
 
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
-    validationSchema,
+    validationSchema: getValidationSchema(t),
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
-      console.log('SignUp values  -', values);
       axios.post('/api/v1/signup', values)
         .then((response) => {
           localStorage.setItem('user', JSON.stringify(response.data));
@@ -54,10 +55,6 @@ const SignUp = () => {
   });
 
   useEffect(() => {
-    console.log('SignUp useEffect error -', error);
-  }, [error]);
-
-  useEffect(() => {
     usernameRef.current.focus();
   }, []);
 
@@ -71,13 +68,13 @@ const SignUp = () => {
                 <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
               </div>
               <Form className="w-50" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('authorization.signUp.title')}</h1>
                 <Form.Group>
-                  <FloatingLabel htmlFor="username" controlId="username" label="Имя пользователя" className="mb-3">
+                  <FloatingLabel htmlFor="username" controlId="username" label={t('authorization.signUp.inputName.label')} className="mb-3">
                     <Form.Control
                       type="text"
                       name="username"
-                      placeholder="От 3 до 20 символов"
+                      placeholder={t('authorization.signUp.inputName.placeholder')}
                       autoComplete="username"
                       ref={usernameRef}
                       required
@@ -89,11 +86,11 @@ const SignUp = () => {
                   </FloatingLabel>
                 </Form.Group>
                 <Form.Group>
-                  <FloatingLabel htmlFor="password" controlId="password" label="Пароль" className="mb-3">
+                  <FloatingLabel htmlFor="password" controlId="password" label={t('authorization.signUp.inputPass.label')} className="mb-3">
                     <Form.Control
                       type="password"
                       name="password"
-                      placeholder="Не менее 6 символов"
+                      placeholder={t('authorization.signUp.inputPass.placeholder')}
                       autoComplete="new-password"
                       required
                       ref={passwordRef}
@@ -105,11 +102,11 @@ const SignUp = () => {
                   </FloatingLabel>
                 </Form.Group>
                 <Form.Group>
-                  <FloatingLabel htmlFor="confirmPassword" controlId="confirmPassword" label="Подтвердите пароль" className="mb-4">
+                  <FloatingLabel htmlFor="confirmPassword" controlId="confirmPassword" label={t('authorization.signUp.inputConfirmPass.label')} className="mb-4">
                     <Form.Control
                       type="password"
                       name="confirmPassword"
-                      placeholder="Пароли должны совпадать"
+                      placeholder={t('authorization.signUp.inputConfirmPass.placeholder')}
                       autoComplete="current-password"
                       required
                       ref={confirmPassword}
@@ -117,12 +114,11 @@ const SignUp = () => {
                       onChange={formik.handleChange}
                       isInvalid={!!formik.errors.confirmPassword || !!error}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{(formik.errors.confirmPassword || 'Такой пользователь уже существует')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{(formik.errors.confirmPassword || t('validationError.thisUserExists'))}</Form.Control.Feedback>
                   </FloatingLabel>
                 </Form.Group>
-
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">
-                  Зарегистрироваться
+                  {t('authorization.signUp.button')}
                 </Button>
               </Form>
             </div>
