@@ -1,11 +1,10 @@
+import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
-
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { toast } from 'react-toastify';
 
 import { actions as modalActions } from '../../slices/modalSlice';
+import axiosApi from '../../utils/axiosApi';
 
 const AddModal = () => {
   const dispatch = useDispatch();
@@ -15,18 +14,17 @@ const AddModal = () => {
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleRemoveButton = () => {
-    const patchUrl = `/api/v1/channels/${changeableСhannelId}`;
-    axios.delete(patchUrl, {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    })
-      .then(() => {
-        dispatch(modalActions.closedModal());
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    axiosApi({
+      request: 'delete',
+      path: `channels/${changeableСhannelId}`,
+      token: user.token,
+    }).then(() => {
+      dispatch(modalActions.closedModal());
+      toast.success(t('toasts.removeChannel.success'));
+    }).catch((error) => {
+      toast.error(t('toasts.removeChannel.error'));
+      console.error(error);
+    });
   };
 
   return (

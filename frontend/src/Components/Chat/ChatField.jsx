@@ -2,12 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ChevronRight } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { actions as chatActions } from '../../slices/chatSlice';
+import axiosApi from '../../utils/axiosApi';
 
 const ChatField = () => {
   const dispatch = useDispatch();
@@ -35,17 +35,18 @@ const ChatField = () => {
         channelId: activeChannelId,
         username: user.username,
       };
-      axios.post('/api/v1/messages', newMessage, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          actions.resetForm({ values: { message: '' } });
-        });
+      axiosApi({
+        request: 'post',
+        path: 'messages',
+        data: newMessage,
+        token: user.token,
+      }).then(() => {
+        messageRef.current.focus();
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        actions.resetForm({ values: { message: '' } });
+      });
     },
   });
 
@@ -83,10 +84,11 @@ const ChatField = () => {
           ))}
         </div>
         <div className="mt-auto px-5 py-3">
-          <Form noValidate className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
-            <InputGroup hasValidation={isValidInput}>
+          <Form className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
+            <InputGroup>
               <Form.Control
                 ref={messageRef}
+                autoFocus
                 id="message"
                 name="message"
                 className="border-0 p-0 ps-2"

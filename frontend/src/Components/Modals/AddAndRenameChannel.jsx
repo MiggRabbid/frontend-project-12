@@ -1,16 +1,14 @@
 import { useRef, useEffect } from 'react';
+import { Modal, Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
-import axios from 'axios';
-
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 
 import { actions as modalActions } from '../../slices/modalSlice';
 import { actions as chatActions } from '../../slices/chatSlice';
+import axiosApi from '../../utils/axiosApi';
 
 const getValidationSchema = (t, currentChannels) => yup.object({
   newChannelName: yup.string().trim()
@@ -21,7 +19,6 @@ const getValidationSchema = (t, currentChannels) => yup.object({
 });
 
 const AddAndRenameChannel = ({ modalType }) => {
-  console.log('AddAndRenameChannel - ', modalType);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const inputRef = useRef();
@@ -38,37 +35,35 @@ const AddAndRenameChannel = ({ modalType }) => {
     onSubmit: (values) => {
       const newChannelName = { name: values.newChannelName };
       if (modalType === 'addChannel') {
-        axios.post('/api/v1/channels', newChannelName, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        })
-          .then(() => {
-            dispatch(modalActions.closedModal());
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        axiosApi({
+          request: 'post',
+          path: 'channels',
+          data: newChannelName,
+          token: user.token,
+        }).then(() => {
+          dispatch(modalActions.closedModal());
+          toast.success(t('toasts.addChannel.success'));
+        }).catch((error) => {
+          toast.error(t('toasts.addChannel.error'));
+          console.error(error);
+        });
       }
       if (modalType === 'renameChannel') {
-        const patchUrl = `/api/v1/channels/${changeableСhannelId}`;
-        axios.patch(patchUrl, newChannelName, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        })
-          .then((response) => {
-            console.log('activeChannelId - ', activeChannelId);
-            console.log('response.data   - ', response.data.id);
-            console.log('newChannelName  - ', newChannelName.name);
-            if (response.data.id === activeChannelId) {
-              dispatch(chatActions.setActiveChanel(newChannelName.name));
-            }
-            dispatch(modalActions.closedModal());
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        axiosApi({
+          request: 'patch',
+          path: `channels/${changeableСhannelId}`,
+          data: newChannelName,
+          token: user.token,
+        }).then((response) => {
+          if (response.data.id === activeChannelId) {
+            dispatch(chatActions.setActiveChanel(newChannelName.name));
+          }
+          dispatch(modalActions.closedModal());
+          toast.success(t('toasts.renameChannel.success'));
+        }).catch((error) => {
+          toast.error(t('toasts.renameChannel.error'));
+          console.error(error);
+        });
       }
     },
   });

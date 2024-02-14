@@ -1,14 +1,15 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import {
   Button, FloatingLabel, Form,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 
 import { actions as authActions } from '../../slices/authSlice';
+import axiosApi from '../../utils/axiosApi';
 import logo from '../../img/logo800-800.png';
 
 const Login = () => {
@@ -24,21 +25,27 @@ const Login = () => {
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     onSubmit: (values, { setSubmitting }) => {
-      console.log('Login values -', values);
       setSubmitting(true);
-      axios.post('/api/v1/login', values)
-        .then((response) => {
-          localStorage.setItem('user', JSON.stringify(response.data));
-          dispatch(authActions.loginSuccess(response.data));
-          navigate('/');
-        })
-        .catch((e) => {
+      axiosApi({
+        request: 'post',
+        path: 'login',
+        data: values,
+      }).then((response) => {
+        localStorage.setItem('user', JSON.stringify(response.data));
+        dispatch(authActions.loginSuccess(response.data));
+        navigate('/');
+      }).catch((e) => {
+        console.error(e);
+        if (!e.isAxiosError) {
+          toast.error(t('toasts.auth.unknownErr'));
+        } else if (e.response.status === 401) {
           dispatch(authActions.loginFailed(e.response.data));
-          console.error(e);
-        })
-        .finally(() => {
-          setSubmitting(false);
-        });
+        } else {
+          toast.error(t('toasts.auth.networkErr'));
+        }
+      }).finally(() => {
+        setSubmitting(false);
+      });
     },
   });
 

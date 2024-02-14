@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import Header from './Header';
 import Home from './Home';
@@ -32,6 +35,18 @@ const App = () => {
         </div>
       </div>
       {modalState && (<ModalBox />)}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </Router>
   );
 };
