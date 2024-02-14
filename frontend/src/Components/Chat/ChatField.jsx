@@ -95,7 +95,6 @@ const ChatField = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.message}
-                disabled={formik.isSubmitting}
                 aria-label={t('chatPage.chatField.messageInput.lable')}
                 placeholder={t('chatPage.chatField.messageInput.placeholder')}
               />
