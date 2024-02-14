@@ -1,15 +1,16 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import {
   Button, FloatingLabel, Form,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
-import axios from 'axios';
 
 import { actions as authActions } from '../../slices/authSlice';
+import axiosApi from '../../utils/axiosApi';
 import logo from '../../img/logo800-800.png';
 
 const getValidationSchema = (t) => yup.object({
@@ -38,19 +39,26 @@ const SignUp = () => {
     validationSchema: getValidationSchema(t),
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
-      axios.post('/api/v1/signup', values)
-        .then((response) => {
-          localStorage.setItem('user', JSON.stringify(response.data));
-          dispatch(authActions.loginSuccess(response.data));
-          navigate('/');
-        })
-        .catch((e) => {
+      axiosApi({
+        request: 'post',
+        path: 'signup',
+        data: values,
+      }).then((response) => {
+        localStorage.setItem('user', JSON.stringify(response.data));
+        dispatch(authActions.loginSuccess(response.data));
+        navigate('/');
+      }).catch((e) => {
+        console.error(e);
+        if (!e.isAxiosError) {
+          toast.error(t('toasts.auth.unknownErr'));
+        } else if (e.response.status === 401) {
           dispatch(authActions.loginFailed(e.response.data));
-          console.error(e);
-        })
-        .finally(() => {
-          setSubmitting(false);
-        });
+        } else {
+          toast.error(t('toasts.auth.networkErr'));
+        }
+      }).finally(() => {
+        setSubmitting(false);
+      });
     },
   });
 

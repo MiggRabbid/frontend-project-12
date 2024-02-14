@@ -96,5 +96,23 @@ export default {
       thisUserExists: 'Такой пользователь уже существует',
       thisNameExists: 'Должно быть уникальны',
     },
+    toasts: {
+      auth: {
+        unknownErr: 'Неизвестная ошибка',
+        networkErr: 'Ошибка соединения',
+      },
+      addChannel: {
+        success: 'Канал создан',
+        error: 'Ошибка создания канала',
+      },
+      renameChannel: {
+        success: 'Канал переименован',
+        error: 'Ошибка переименования канала',
+      },
+      removeChannel: {
+        success: 'Канал удалён',
+        error: 'Ошибка удаления канала',
+      },
+    },
   },
 };

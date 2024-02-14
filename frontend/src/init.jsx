@@ -4,11 +4,10 @@ import io from 'socket.io-client';
 import i18n from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-// import * as yup from 'yup';
+
 import reducer, { actions } from './slices/index';
-import App from './Components/App';
-// import locale from './locales/locale';
 import resources from './locales/index';
+import App from './Components/App';
 
 const initApp = async () => {
   const i18nextInstance = await i18n.createInstance();
@@ -26,11 +25,6 @@ const initApp = async () => {
       debug: true,
     });
 
-  // const setYupLocale = () => {
-  //   yup.setLocale(locale);
-  // };
-  // setYupLocale(i18nextInstance);
-  //
   const socket = io();
   socket.on('newMessage', (newMessage) => {
     store.dispatch(actions.updateCurrentChats(newMessage));
