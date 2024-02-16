@@ -24,6 +24,7 @@
     "formik": "^2.4.5",
     "i18next": "^23.8.2",
     "i18next-browser-languagedetector": "^7.2.0",
+    "leo-profanity": "^1.7.0",
     "lorem-ipsum": "^2.0.8",
     "nth-check": "^2.1.1",
     "postcss": "^8.4.33",

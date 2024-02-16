@@ -1,23 +1,20 @@
 import React from 'react';
 import { Navbar, Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { actions as authActions } from '../slices/authSlice';
+import useAuth from '../hooks/index';
+import routes from '../routes';
 import logoImg from '../img/logo120-40.png';
 
 const Header = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user, logOut } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    dispatch(authActions.logout());
-    navigate('/login');
+    logOut();
+    navigate(routes.chatPagePath());
   };
 
   return (
