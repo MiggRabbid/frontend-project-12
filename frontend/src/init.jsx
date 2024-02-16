@@ -4,12 +4,18 @@ import io from 'socket.io-client';
 import i18n from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import leoProfanity from 'leo-profanity';
 
 import reducer, { actions } from './slices/index';
 import resources from './locales/index';
+import badWords from './locales/badWords.js';
 import App from './Components/App';
 
 const initApp = async () => {
+  const ruBadWords = leoProfanity.getDictionary('ru');
+  leoProfanity.add(ruBadWords);
+  leoProfanity.add(badWords);
+
   const i18nextInstance = await i18n.createInstance();
   const store = configureStore({
     reducer,

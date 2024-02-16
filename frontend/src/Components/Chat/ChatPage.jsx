@@ -1,37 +1,34 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import { actions as chatActions } from '../../slices/chatSlice';
-import axiosApi from '../../utils/axiosApi';
+import useAuth from '../../hooks/index';
+import routes from '../../routes';
+
 import ChannelsField from './ChannelsField';
 import ChatField from './ChatField';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { getAuthHeader } = useAuth();
 
   useEffect(() => {
-    axiosApi({
-      request: 'get',
-      path: 'channels',
-      token: user.token,
-    }).then((response) => {
+    axios.get(routes.dataRequestPath('channels'), { headers: getAuthHeader() }).then((response) => {
       dispatch(chatActions.setCurrentChannels(response.data));
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   useEffect(() => {
-    axiosApi({
-      request: 'get',
-      path: 'messages',
-      token: user.token,
-    }).then((response) => {
+    axios.get(routes.dataRequestPath('messages'), { headers: getAuthHeader() }).then((response) => {
       dispatch(chatActions.setCurrentChats(response.data));
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   return (

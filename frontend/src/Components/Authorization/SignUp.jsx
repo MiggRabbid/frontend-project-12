@@ -7,10 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 import * as yup from 'yup';
 
+import useAuth from '../../hooks/index';
 import { actions as authActions } from '../../slices/authSlice';
-import axiosApi from '../../utils/axiosApi';
+import routes from '../../routes';
+
 import logo from '../../img/logo800-800.png';
 
 const getValidationSchema = (t) => yup.object({
@@ -32,6 +35,7 @@ const SignUp = () => {
   const usernameRef = useRef();
   const passwordRef = useRef();
   const confirmPassword = useRef();
+  const { logIn } = useAuth();
   const error = useSelector((state) => state.authReducer.error);
 
   const formik = useFormik({
@@ -39,26 +43,27 @@ const SignUp = () => {
     validationSchema: getValidationSchema(t),
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
-      axiosApi({
-        request: 'post',
-        path: 'signup',
-        data: values,
-      }).then((response) => {
-        localStorage.setItem('user', JSON.stringify(response.data));
-        dispatch(authActions.loginSuccess(response.data));
-        navigate('/');
-      }).catch((e) => {
-        console.error(e);
-        if (!e.isAxiosError) {
-          toast.error(t('toasts.auth.unknownErr'));
-        } else if (e.response.status === 401) {
-          dispatch(authActions.loginFailed(e.response.data));
-        } else {
-          toast.error(t('toasts.auth.networkErr'));
-        }
-      }).finally(() => {
-        setSubmitting(false);
-      });
+      axios.post(routes.signupRequestPath(), {
+        username: values.username,
+        password: values.password,
+      })
+        .then((response) => {
+          console.log('Login response data -', response.data);
+          logIn(response.data);
+          navigate(routes.chatPagePath());
+        })
+        .catch((e) => {
+          console.error(e);
+          if (!e.isAxiosError) {
+            toast.error(t('toasts.auth.unknownErr'));
+          } else if (e.response.status === 409) {
+            dispatch(authActions.loginFailed(e.response.data));
+          } else {
+            toast.error(t('toasts.auth.networkErr'));
+          }
+        }).finally(() => {
+          setSubmitting(false);
+        });
     },
   });
 

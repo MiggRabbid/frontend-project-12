@@ -3,6 +3,8 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import routes from '../routes';
+
 const NotFound = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -22,7 +24,7 @@ const NotFound = () => {
         <br />
         <Button
           variant="outline-dark"
-          onClick={() => navigate('/')}
+          onClick={() => navigate(routes.chatPagePath())}
         >
           {t('notFound.button')}
         </Button>

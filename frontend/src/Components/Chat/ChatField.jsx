@@ -4,15 +4,19 @@ import { ChevronRight } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import leoProfanity from 'leo-profanity';
 import * as yup from 'yup';
+import axios from 'axios';
 
 import { actions as chatActions } from '../../slices/chatSlice';
-import axiosApi from '../../utils/axiosApi';
+import useAuth from '../../hooks/index';
+import routes from '../../routes';
 
 const ChatField = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const messageRef = useRef();
+  const { getAuthHeader } = useAuth();
 
   const user = JSON.parse(localStorage.getItem('user'));
   const activeChannelId = useSelector((state) => state.chatReducer.activeChannelId);
@@ -30,23 +34,20 @@ const ChatField = () => {
     initialValues: { message: '' },
     validationSchema,
     onSubmit: (values, actions) => {
+      console.log(values.message);
       const newMessage = {
-        body: values.message,
+        body: leoProfanity.clean(values.message),
         channelId: activeChannelId,
         username: user.username,
       };
-      axiosApi({
-        request: 'post',
-        path: 'messages',
-        data: newMessage,
-        token: user.token,
-      }).then(() => {
-        messageRef.current.focus();
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        actions.resetForm({ values: { message: '' } });
-      });
+      axios.post(routes.dataRequestPath('messages'), newMessage, { headers: getAuthHeader() })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          messageRef.current.focus();
+          actions.resetForm({ values: { message: '' } });
+        });
     },
   });
 

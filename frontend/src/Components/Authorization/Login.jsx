@@ -7,9 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
+import useAuth from '../../hooks/index';
 import { actions as authActions } from '../../slices/authSlice';
-import axiosApi from '../../utils/axiosApi';
+
+import routes from '../../routes';
 import logo from '../../img/logo800-800.png';
 
 const Login = () => {
@@ -18,39 +21,38 @@ const Login = () => {
   const { t } = useTranslation();
   const passwordRef = useRef(null);
   const usernameRef = useRef();
+  const { user, logIn } = useAuth();
 
   const error = useSelector((state) => state.authReducer.error);
-  const user = JSON.parse(localStorage.getItem('user'));
 
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
-      axiosApi({
-        request: 'post',
-        path: 'login',
-        data: values,
-      }).then((response) => {
-        localStorage.setItem('user', JSON.stringify(response.data));
-        dispatch(authActions.loginSuccess(response.data));
-        navigate('/');
-      }).catch((e) => {
-        console.error(e);
-        if (!e.isAxiosError) {
-          toast.error(t('toasts.auth.unknownErr'));
-        } else if (e.response.status === 401) {
-          dispatch(authActions.loginFailed(e.response.data));
-        } else {
-          toast.error(t('toasts.auth.networkErr'));
-        }
-      }).finally(() => {
-        setSubmitting(false);
-      });
+      axios.post(routes.loginRequestPath(), values)
+        .then((response) => {
+          console.log('Login response data -', response.data);
+          logIn(response.data);
+          navigate(routes.chatPagePath());
+        })
+        .catch((e) => {
+          console.error(e);
+          if (!e.isAxiosError) {
+            toast.error(t('toasts.auth.unknownErr'));
+          } else if (e.response.status === 401) {
+            dispatch(authActions.loginFailed(e.response.data));
+          } else {
+            toast.error(t('toasts.auth.networkErr'));
+          }
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
     },
   });
 
   useEffect(() => {
-    if (user) navigate('/');
+    if (user) navigate(routes.chatPagePath());
   }, []);
 
   useEffect(() => {
