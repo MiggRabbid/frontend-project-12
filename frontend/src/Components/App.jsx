@@ -4,6 +4,7 @@ import {
   BrowserRouter, Routes, Route, Navigate, Outlet,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { Provider as Rollbar, ErrorBoundary } from '@rollbar/react';
 import 'react-toastify/dist/ReactToastify.css';
 
 import useAuth from '../hooks/index';
@@ -21,7 +22,13 @@ const PrivateOutlet = () => {
   return authentication.user ? <Outlet /> : <Navigate to={routes.loginPagePath()} />;
 };
 
+const rollbarConfig = {
+  accessToken: 'b0a4bbc496bc4484977e4caa87905c86',
+  environment: process.env.NODE_ENV,
+};
+
 const App = () => {
+  console.log('App ENV -', process.env.NODE_ENV);
   const modalState = useSelector((state) => state.modalReducer.show);
   useEffect(() => {
     document.querySelector('html').classList.add('h-100');
@@ -30,37 +37,40 @@ const App = () => {
   }, []);
 
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="h-100" id="chat">
-          <div className="d-flex flex-column h-100 ">
-            <Header />
-            <Routes>
-              <Route path={routes.loginPagePath()} element={<Login />} />
-              <Route path={routes.signupPagePath()} element={<SignUp />} />
-              <Route path={routes.chatPagePath()} element={<PrivateOutlet />}>
-                <Route path="" element={<ChatPage />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-        </div>
-        {modalState && (<ModalBox />)}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </BrowserRouter>
-    </AuthProvider>
-
+    <Rollbar config={rollbarConfig}>
+      <ErrorBoundary>
+        <AuthProvider>
+          <BrowserRouter>
+            <div className="h-100" id="chat">
+              <div className="d-flex flex-column h-100 ">
+                <Header />
+                <Routes>
+                  <Route path={routes.loginPagePath()} element={<Login />} />
+                  <Route path={routes.signupPagePath()} element={<SignUp />} />
+                  <Route path={routes.chatPagePath()} element={<PrivateOutlet />}>
+                    <Route path="" element={<ChatPage />} />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+            </div>
+            {modalState && (<ModalBox />)}
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+          </BrowserRouter>
+        </AuthProvider>
+      </ErrorBoundary>
+    </Rollbar>
   );
 };
 
