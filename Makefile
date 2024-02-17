@@ -11,6 +11,7 @@ start-backend:
 	npx start-server
 
 build:
+	rm frontend/build -rf
 	npm run build
 
 start:

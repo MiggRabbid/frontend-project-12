@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import useAuth from '../hooks/index';
 import routes from '../routes';
-import logoImg from '../img/logo120-40.png';
+import logoImg from '../assets/logo120-40.png';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <Navbar expand="lg" className="shadow-sm bg-white">
       <div className="container">
-        <Navbar.Brand href="/">
+        <Navbar.Brand href="/" title={t('header.logoText')}>
           <span className="visually-hidden">{t('header.logoText')}</span>
           <img src={logoImg} alt="Logo" />
         </Navbar.Brand>
