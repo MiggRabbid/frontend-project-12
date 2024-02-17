@@ -25,6 +25,8 @@ const PrivateOutlet = () => {
 const rollbarConfig = {
   accessToken: 'b0a4bbc496bc4484977e4caa87905c86',
   environment: process.env.NODE_ENV,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
 };
 
 const App = () => {
