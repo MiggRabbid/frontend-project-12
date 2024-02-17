@@ -9,7 +9,6 @@ const AuthProvider = ({ children }) => {
     : null);
 
   const logIn = (data) => {
-    console.log('AuthProvider logIn -', data);
     localStorage.setItem('user', JSON.stringify(data));
     setUser({ user: data.username, token: data.token });
   };

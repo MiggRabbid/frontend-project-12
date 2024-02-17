@@ -11,9 +11,13 @@ import axios from 'axios';
 
 import useAuth from '../../hooks/index';
 import { actions as authActions } from '../../slices/authSlice';
-
 import routes from '../../routes';
 import logo from '../../img/logo800-800.png';
+
+const TestErrorLogin = () => {
+  const testErrorLogin = new Error('Тестовая ошибка для Rollbar в Login');
+  throw testErrorLogin;
+};
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -31,7 +35,6 @@ const Login = () => {
       setSubmitting(true);
       axios.post(routes.loginRequestPath(), values)
         .then((response) => {
-          console.log('Login response data -', response.data);
           logIn(response.data);
           navigate(routes.chatPagePath());
         })
@@ -52,11 +55,12 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (user) navigate(routes.chatPagePath());
-  }, []);
-
-  useEffect(() => {
-    usernameRef.current.focus();
+    console.log(user);
+    if (user) {
+      navigate(routes.chatPagePath());
+    } else {
+      usernameRef.current.focus();
+    }
   }, []);
 
   return (
@@ -66,6 +70,7 @@ const Login = () => {
         <div className="col-12 col-md-8 col-xxl-6">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
+              <TestErrorLogin />
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center position-relative">
                 <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
               </div>
