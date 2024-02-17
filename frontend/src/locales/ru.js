@@ -45,8 +45,8 @@ export default {
       channels: {
         title: 'Каналы',
         prefix: '# ',
-        addButton: 'Добавить канал',
-        changeButton: 'Изменить канал',
+        addButton: '+',
+        changeButton: 'Управление каналом',
         removeChannel: 'Удалить',
         renameChannel: 'Переименовать',
       },
@@ -70,7 +70,7 @@ export default {
       addAndRename: {
         addChannel: 'Добавить канал',
         renameChannel: 'Переименовать канал',
-        inputPlaceholder: 'Введите название канала (от 3 до 20 символов)',
+        inputPlaceholder: 'Имя канала',
         button: 'Отправить',
 
       },
