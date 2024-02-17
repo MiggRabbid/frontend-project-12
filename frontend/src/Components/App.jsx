@@ -28,7 +28,6 @@ const rollbarConfig = {
 };
 
 const App = () => {
-  console.log('App ENV -', process.env.NODE_ENV);
   const modalState = useSelector((state) => state.modalReducer.show);
   useEffect(() => {
     document.querySelector('html').classList.add('h-100');
