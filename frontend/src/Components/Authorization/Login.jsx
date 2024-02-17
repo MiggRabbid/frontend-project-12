@@ -14,11 +14,6 @@ import { actions as authActions } from '../../slices/authSlice';
 import routes from '../../routes';
 import logo from '../../img/logo800-800.png';
 
-const TestErrorLogin = () => {
-  const testErrorLogin = new Error('Тестовая ошибка для Rollbar в Login');
-  throw testErrorLogin;
-};
-
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -70,7 +65,6 @@ const Login = () => {
         <div className="col-12 col-md-8 col-xxl-6">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
-              <TestErrorLogin />
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center position-relative">
                 <img src={logo} alt="Simple Chat" className="rounded-circle" style={{ width: 200, height: 200 }} />
               </div>
