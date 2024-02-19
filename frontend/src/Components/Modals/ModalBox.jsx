@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
 
+import { useEffect } from 'react';
 import { actions as modalActions } from '../../slices/modalSlice';
 import AddAndRenameChannel from './AddAndRenameChannel';
 import RemoveChannel from './RemoveChannel';
@@ -16,6 +17,12 @@ const ModalBox = () => {
 
   const modalState = useSelector((state) => state.modalReducer.show);
   const modalType = useSelector((state) => state.modalReducer.modalType);
+
+  useEffect(() => {
+    console.log('modalState -', modalState);
+    console.log('modalType  -', modalType);
+    console.log('---------------------');
+  });
 
   const CurrentModal = mappingModal[modalType];
 

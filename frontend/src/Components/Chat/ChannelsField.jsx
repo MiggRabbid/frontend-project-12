@@ -22,6 +22,8 @@ const ChannelsField = () => {
   };
 
   const handelChangeChannel = (event) => {
+    console.log('---------- handelChangeChannel');
+    console.log('target -', event.target);
     dispatch(modalActions.openModal({
       id: event.target.id,
       modalType: event.target.dataset.change,
@@ -38,6 +40,7 @@ const ChannelsField = () => {
           type="button"
           variant="group-vertical"
           className="p-0 text-primary"
+          id="addChannel"
         >
           <PlusSquare id="addChannel" data-change="addChannel" size={20} />
           <span className="visually-hidden">{t('chatPage.channels.addButton')}</span>
