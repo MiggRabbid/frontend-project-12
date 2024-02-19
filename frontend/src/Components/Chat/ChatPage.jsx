@@ -14,8 +14,8 @@ const ChatPage = () => {
   const { getAuthHeader } = useAuth();
 
   useEffect(() => {
-    axios.get(routes.dataRequestPath('channels'), { headers: getAuthHeader() }).then((response) => {
-      dispatch(chatActions.setCurrentChannels(response.data));
+    axios.get(routes.dataRequestPath('messages'), { headers: getAuthHeader() }).then((response) => {
+      dispatch(chatActions.setCurrentChats(response.data));
     })
       .catch((error) => {
         console.error(error);
@@ -23,8 +23,8 @@ const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(routes.dataRequestPath('messages'), { headers: getAuthHeader() }).then((response) => {
-      dispatch(chatActions.setCurrentChats(response.data));
+    axios.get(routes.dataRequestPath('channels'), { headers: getAuthHeader() }).then((response) => {
+      dispatch(chatActions.setCurrentChannels(response.data));
     })
       .catch((error) => {
         console.error(error);

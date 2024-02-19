@@ -15,8 +15,10 @@ const ChannelsField = () => {
   const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
 
   const handelSwitchChanel = (event) => {
-    dispatch(chatActions.setActiveChanel(event.target.name));
-    dispatch(chatActions.setActiveChannelId(event.target.id));
+    dispatch(chatActions.setActiveChanel({
+      name: event.target.name,
+      id: event.target.id,
+    }));
   };
 
   const handelChangeChannel = (event) => {
