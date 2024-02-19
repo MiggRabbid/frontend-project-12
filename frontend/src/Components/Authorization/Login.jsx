@@ -50,13 +50,12 @@ const Login = () => {
   });
 
   useEffect(() => {
-    console.log(user);
     if (user) {
       navigate(routes.chatPagePath());
     } else {
       usernameRef.current.focus();
     }
-  }, []);
+  }, [user, navigate, usernameRef]);
 
   return (
     !user && (

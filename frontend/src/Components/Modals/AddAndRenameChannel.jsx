@@ -54,7 +54,7 @@ const AddAndRenameChannel = ({ modalType }) => {
         axios.patch(routes.dataRequestPath(`channels/${changeableСhannelId}`), newChannelName, { headers: getAuthHeader() })
           .then((response) => {
             if (response.data.id === activeChannelId) {
-              dispatch(chatActions.setActiveChanel(newChannelName.name));
+              dispatch(chatActions.setActiveChannel(newChannelName));
             }
             dispatch(modalActions.closedModal());
             toast.success(t('toasts.renameChannel.success'));
@@ -69,7 +69,7 @@ const AddAndRenameChannel = ({ modalType }) => {
 
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [inputRef]);
 
   return (
     <>

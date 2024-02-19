@@ -48,7 +48,6 @@ const SignUp = () => {
         password: values.password,
       })
         .then((response) => {
-          console.log('Login response data -', response.data);
           logIn(response.data);
           navigate(routes.chatPagePath());
         })

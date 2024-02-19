@@ -20,7 +20,7 @@ const ChatPage = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [dispatch, getAuthHeader]);
 
   useEffect(() => {
     axios.get(routes.dataRequestPath('channels'), { headers: getAuthHeader() }).then((response) => {
@@ -29,7 +29,7 @@ const ChatPage = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [dispatch, getAuthHeader]);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
