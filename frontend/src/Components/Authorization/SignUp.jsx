@@ -126,7 +126,7 @@ const SignUp = () => {
                       onChange={formik.handleChange}
                       isInvalid={!!formik.errors.confirmPassword || !!error}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{(formik.errors.confirmPassword || t('validationError.invalidPassConfirm'))}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{(formik.errors.confirmPassword || t('validationError.thisUserExists'))}</Form.Control.Feedback>
                   </FloatingLabel>
                 </Form.Group>
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">
