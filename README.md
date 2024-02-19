@@ -21,7 +21,6 @@
 git clone https://github.com/MiggRabbid/frontend-project-12
 cd frontend-project-12
 make install
-make build
 
 make start //для запуска на локальном хосте
 ```
