@@ -4,82 +4,75 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState: {
     currentChannels: null,
+    currentChats: [],
     activeChannel: 'general',
     activeChannelId: null,
-    currentChats: [],
     activeChat: [],
   },
   reducers: {
     setCurrentChannels: (state, action) => {
-      const { currentChats } = state;
+      const { currentChats, activeChannel } = state;
       const currentChannels = action.payload;
-      const activeChannel = currentChannels.find((channel) => channel.name === state.activeChannel);
-      const activeChannelId = activeChannel.id;
+      const activeChannelId = currentChannels
+        .find((channel) => (channel.name === activeChannel)).id;
       const activeChat = currentChats.filter((chat) => chat.channelId === activeChannelId);
-
       return {
         ...state, activeChannelId, currentChannels, activeChat,
       };
     },
-    setActiveChanel: (state, action) => ({
-      ...state,
-      activeChannel: action.payload,
-    }),
-    setActiveChannelId: (state, action) => ({
-      ...state,
-      activeChannelId: action.payload,
-    }),
     setCurrentChats: (state, action) => ({
       ...state,
       currentChats: action.payload,
     }),
+    setActiveChanel: (state, action) => {
+      const { currentChats } = state;
+      const { name, id } = action.payload;
+      const activeChat = currentChats.filter((chat) => chat.channelId === id);
+      return {
+        ...state, activeChannel: name, activeChannelId: id, activeChat,
+      };
+    },
     updateCurrentChats: (state, action) => {
       const newMessage = action.payload;
       const updatedCurrentChats = [...state.currentChats, action.payload];
-      if (state.activeChannelId === newMessage.channelId) {
-        const updatedActiveChat = [...state.activeChat, newMessage];
-        return { ...state, currentChats: updatedCurrentChats, activeChat: updatedActiveChat };
-      }
-      return { ...state, currentChats: updatedCurrentChats };
+      return (state.activeChannelId !== newMessage.channelId)
+        ? ({
+          ...state,
+          currentChats: updatedCurrentChats,
+        })
+        : ({
+          ...state,
+          currentChats: updatedCurrentChats,
+          activeChat: [...state.activeChat, newMessage],
+        });
     },
-    updateCurrentChannels: (state, action) => {
-      const updatedChannels = [...state.currentChannels, action.payload];
-      return { ...state, currentChannels: updatedChannels };
-    },
-    setActiveChat: (state, action) => {
-      const { currentChats } = state;
-      const activeChannelId = action.payload;
-      if (activeChannelId === null || activeChannelId === undefined) {
-        return { ...state };
-      }
-      const activeChat = currentChats.filter((chat) => chat.channelId === activeChannelId);
-      return { ...state, activeChat };
-    },
-    removeChannel: (state, actions) => {
+    updateCurrentChannels: (state, action) => ({
+      ...state,
+      currentChannels: [...state.currentChannels, action.payload],
+      activeChannel: action.payload.name,
+    }),
+    removeChannel: (state, action) => {
+      console.log(action.payload);
       const { currentChannels, activeChannelId } = state;
-      const deletedId = actions.payload.id;
+      const deletedId = action.payload.id;
       const updatedChannels = currentChannels.filter((channels) => channels.id !== deletedId);
-      if (deletedId === activeChannelId) {
-        return {
+      return (deletedId === activeChannelId)
+        ? ({
           ...state,
           currentChannels: updatedChannels,
           activeChannel: 'general',
-        };
-      }
-      return {
-        ...state,
-        currentChannels: updatedChannels,
-      };
+        })
+        : ({
+          ...state,
+          currentChannels: updatedChannels,
+        });
     },
-    renameChannel: (state, actions) => {
+    renameChannel: (state, action) => {
       const { currentChannels } = state;
-      const renameChannel = actions.payload;
-      const updatedChannels = currentChannels.map((channel) => {
-        if (channel.id !== renameChannel.id) {
-          return channel;
-        }
-        return renameChannel;
-      });
+      const renameChannel = action.payload;
+      const updatedChannels = currentChannels.map((channel) => ((channel.id !== renameChannel.id)
+        ? channel
+        : renameChannel));
       return {
         ...state,
         currentChannels: updatedChannels,

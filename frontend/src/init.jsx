@@ -37,8 +37,6 @@ const initApp = async () => {
   });
   socket.on('newChannel', (newChannel) => {
     store.dispatch(actions.updateCurrentChannels(newChannel));
-    store.dispatch(actions.setActiveChanel(newChannel.name));
-    store.dispatch(actions.setActiveChannelId(newChannel.id));
   });
   socket.on('renameChannel', (newChannel) => {
     store.dispatch(actions.renameChannel(newChannel));

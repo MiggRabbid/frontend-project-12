@@ -1,40 +1,37 @@
 import React, { useRef, useEffect } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ChevronRight } from 'react-bootstrap-icons';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import leoProfanity from 'leo-profanity';
 import * as yup from 'yup';
 import axios from 'axios';
 
-import { actions as chatActions } from '../../slices/chatSlice';
 import useAuth from '../../hooks/index';
 import routes from '../../routes';
 
+const getValidationSchema = (t) => yup.object().shape({
+  message: yup
+    .string()
+    .trim()
+    .required(t('validationError.requiredField')),
+});
+
 const ChatField = () => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const messageRef = useRef();
   const { getAuthHeader } = useAuth();
 
   const user = JSON.parse(localStorage.getItem('user'));
+  const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
   const activeChannelId = useSelector((state) => state.chatReducer.activeChannelId);
   const activeChat = useSelector((state) => state.chatReducer.activeChat);
-  const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
-
-  const validationSchema = yup.object().shape({
-    message: yup
-      .string()
-      .trim()
-      .required(t('validationError.requiredField')),
-  });
 
   const formik = useFormik({
     initialValues: { message: '' },
-    validationSchema,
+    validationSchema: getValidationSchema(t),
     onSubmit: (values, actions) => {
-      console.log(values.message);
       const newMessage = {
         body: leoProfanity.clean(values.message),
         channelId: activeChannelId,
@@ -53,11 +50,7 @@ const ChatField = () => {
 
   useEffect(() => {
     messageRef.current.focus();
-  }, [activeChannelId]);
-
-  useEffect(() => {
-    dispatch(chatActions.setActiveChat(activeChannelId));
-  }, [activeChannelId]);
+  }, [messageRef]);
 
   const isValidInput = !formik.dirty || !formik.isValid;
 
