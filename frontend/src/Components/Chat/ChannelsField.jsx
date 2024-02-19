@@ -41,9 +41,10 @@ const ChannelsField = () => {
           variant="group-vertical"
           className="p-0 text-primary"
           id="addChannel"
+          data-change="addChannel"
         >
           <PlusSquare id="addChannel" data-change="addChannel" size={20} />
-          <span className="visually-hidden">{t('chatPage.channels.addButton')}</span>
+          <span className="visually-hidden" id="addChannel" data-change="addChannel">{t('chatPage.channels.addButton')}</span>
         </Button>
       </div>
       { currentChannels === null
