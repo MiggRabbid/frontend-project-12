@@ -28,7 +28,6 @@ const initApp = async () => {
       interpolation: {
         escapeValue: false,
       },
-      debug: true,
     });
 
   const socket = io();
