@@ -22,8 +22,6 @@ const ChannelsField = () => {
   };
 
   const handelChangeChannel = (event) => {
-    console.log('---------- handelChangeChannel');
-    console.log('target -', event.target);
     dispatch(modalActions.openModal({
       id: event.target.id,
       modalType: event.target.dataset.change,

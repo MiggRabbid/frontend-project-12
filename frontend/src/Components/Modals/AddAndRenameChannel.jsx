@@ -78,6 +78,7 @@ const AddAndRenameChannel = ({ modalType }) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
+          <Form.Label className="visually-hidden">{t('modals.addAndRename.inputPlaceholder')}</Form.Label>
           <Form.Control
             ref={inputRef}
             onChange={formik.handleChange}
@@ -85,7 +86,6 @@ const AddAndRenameChannel = ({ modalType }) => {
             type="text"
             id="newChannelName"
             name="newChannelName"
-            lable={t('modals.addAndRename.inputPlaceholder')}
             placeholder={t('modals.addAndRename.inputPlaceholder')}
             isInvalid={formik.touched.newChannelName && formik.errors.newChannelName}
           />
