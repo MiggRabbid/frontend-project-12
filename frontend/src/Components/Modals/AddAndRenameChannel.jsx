@@ -8,6 +8,8 @@ import leoProfanity from 'leo-profanity';
 import * as yup from 'yup';
 import axios from 'axios';
 
+import { getCurrentChannels, getActiveChannelId } from '../../selectors/chatSelectors';
+import { getChangeableСhannelId, getChangeableСhannelName } from '../../selectors/modalSelectors';
 import { actions as modalActions } from '../../slices/modalSlice';
 import { actions as chatActions } from '../../slices/chatSlice';
 import useAuth from '../../hooks/index';
@@ -27,14 +29,15 @@ const AddAndRenameChannel = ({ modalType }) => {
   const inputRef = useRef();
   const { getAuthHeader } = useAuth();
 
-  const currentChannels = useSelector((state) => state.chatReducer.currentChannels)
+  const currentChannelsNames = useSelector(getCurrentChannels)
     .map((channel) => channel.name);
-  const activeChannelId = useSelector((state) => state.chatReducer.activeChannelId);
-  const changeableСhannelId = useSelector((state) => state.modalReducer.changeableСhannelId);
+  const activeChannelId = useSelector(getActiveChannelId);
+  const changeableСhannelId = useSelector(getChangeableСhannelId);
+  const changeableСhannelName = useSelector(getChangeableСhannelName);
 
   const formik = useFormik({
-    initialValues: { newChannelName: '' },
-    validationSchema: getValidationSchema(t, currentChannels),
+    initialValues: { newChannelName: changeableСhannelName },
+    validationSchema: getValidationSchema(t, currentChannelsNames),
     onSubmit: (values) => {
       const newChannelName = {
         name: leoProfanity.clean(values.newChannelName),
@@ -68,7 +71,7 @@ const AddAndRenameChannel = ({ modalType }) => {
   });
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.select();
   }, [inputRef]);
 
   return (
@@ -78,17 +81,16 @@ const AddAndRenameChannel = ({ modalType }) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Label className="visually-hidden">{t('modals.addAndRename.inputPlaceholder')}</Form.Label>
           <Form.Control
             ref={inputRef}
             onChange={formik.handleChange}
             value={formik.values.newChannelName}
-            type="text"
             id="newChannelName"
             name="newChannelName"
             placeholder={t('modals.addAndRename.inputPlaceholder')}
             isInvalid={formik.touched.newChannelName && formik.errors.newChannelName}
           />
+          <Form.Label className="visually-hidden">{t('modals.addAndRename.inputPlaceholder')}</Form.Label>
           <Form.Control.Feedback type="invalid">
             {formik.errors.newChannelName}
           </Form.Control.Feedback>
@@ -109,7 +111,6 @@ const AddAndRenameChannel = ({ modalType }) => {
             </Button>
           </div>
         </Form>
-
       </Modal.Body>
     </>
   );

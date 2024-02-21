@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+import { getChangeableСhannelId } from '../../selectors/modalSelectors';
 import { actions as modalActions } from '../../slices/modalSlice';
 import useAuth from '../../hooks/index';
 import routes from '../../routes';
@@ -13,16 +14,16 @@ const AddModal = () => {
   const { t } = useTranslation();
   const { getAuthHeader } = useAuth();
 
-  const changeableСhannelId = useSelector((state) => state.modalReducer.changeableСhannelId);
+  const changeableСhannelId = useSelector(getChangeableСhannelId);
 
   const handleRemoveButton = () => {
     axios.delete(routes.dataRequestPath(`channels/${changeableСhannelId}`), { headers: getAuthHeader() })
       .then(() => {
         dispatch(modalActions.closedModal());
-        toast.success(t('toasts.removeChannel.success'));
+        toast.success(t('toasts.deleteChannel.success'));
       })
       .catch((error) => {
-        toast.error(t('toasts.removeChannel.error'));
+        toast.error(t('toasts.deleteChannel.error'));
         console.error(error);
       });
   };

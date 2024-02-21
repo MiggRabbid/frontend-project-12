@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
 import initApp from './init';
-import reportWebVitals from './reportWebVitals';
 
 const app = async () => {
   const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,4 +16,3 @@ const app = async () => {
 };
 
 app();
-reportWebVitals();

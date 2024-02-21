@@ -52,7 +52,6 @@ const chatSlice = createSlice({
       activeChannel: action.payload.name,
     }),
     removeChannel: (state, action) => {
-      console.log(action.payload);
       const { currentChannels, activeChannelId } = state;
       const deletedId = action.payload.id;
       const updatedChannels = currentChannels.filter((channels) => channels.id !== deletedId);
@@ -74,13 +73,6 @@ const chatSlice = createSlice({
       const updatedChannels = currentChannels.map((channel) => ((channel.id !== renameChannel.id)
         ? channel
         : renameChannel));
-      console.log('activeChannel -', activeChannel);
-      console.log('renameChannel -', renameChannel);
-      if (activeChannel !== renameChannel.name) {
-        console.log(activeChannel !== renameChannel.name);
-      } else {
-        console.log(activeChannel === renameChannel.name);
-      }
       return (activeChannel !== renameChannel.name)
         ? ({ ...state, currentChannels: updatedChannels })
         : ({ ...state, currentChannels: updatedChannels, activeChannel: renameChannel.name });

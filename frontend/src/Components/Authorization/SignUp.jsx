@@ -11,6 +11,7 @@ import axios from 'axios';
 import * as yup from 'yup';
 
 import useAuth from '../../hooks/index';
+import getError from '../../selectors/authSelectors';
 import { actions as authActions } from '../../slices/authSlice';
 import routes from '../../routes';
 
@@ -36,7 +37,8 @@ const SignUp = () => {
   const passwordRef = useRef();
   const confirmPassword = useRef();
   const { logIn } = useAuth();
-  const error = useSelector((state) => state.authReducer.error);
+
+  const error = useSelector(getError);
 
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
@@ -48,6 +50,7 @@ const SignUp = () => {
         password: values.password,
       })
         .then((response) => {
+          console.log(response.data);
           logIn(response.data);
           navigate(routes.chatPagePath());
         })
@@ -82,7 +85,12 @@ const SignUp = () => {
               <Form className="w-50" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('authorization.signUp.title')}</h1>
                 <Form.Group>
-                  <FloatingLabel htmlFor="username" controlId="username" label={t('authorization.signUp.inputName.label')} className="mb-3">
+                  <FloatingLabel
+                    htmlFor="username"
+                    controlId="username"
+                    label={t('authorization.signUp.inputName.label')}
+                    className="mb-3"
+                  >
                     <Form.Control
                       type="text"
                       name="username"

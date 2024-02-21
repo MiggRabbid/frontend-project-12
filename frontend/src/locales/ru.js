@@ -47,7 +47,7 @@ export default {
         prefix: '# ',
         addButton: '+',
         changeButton: 'Управление каналом',
-        removeChannel: 'Удалить',
+        deleteChannel: 'Удалить',
         renameChannel: 'Переименовать',
       },
       chatField: {
@@ -72,7 +72,6 @@ export default {
         renameChannel: 'Переименовать канал',
         inputPlaceholder: 'Имя канала',
         button: 'Отправить',
-
       },
       delete: {
         title: 'Удалить канал',
@@ -109,7 +108,7 @@ export default {
         success: 'Канал переименован',
         error: 'Ошибка переименования канала',
       },
-      removeChannel: {
+      deleteChannel: {
         success: 'Канал удалён',
         error: 'Ошибка удаления канала',
       },

@@ -4,6 +4,7 @@ export default {
   chatPagePath: () => '/',
   loginPagePath: () => '/login',
   signupPagePath: () => '/signup',
+  notFoundPagePath: () => '/*',
   loginRequestPath: () => [apiPath, 'login'].join('/'),
   signupRequestPath: () => [apiPath, 'signup'].join('/'),
   dataRequestPath: (path) => [apiPath, path].join('/'),
