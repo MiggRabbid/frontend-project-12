@@ -21,8 +21,9 @@
 git clone https://github.com/MiggRabbid/frontend-project-12
 cd frontend-project-12
 make install
+make start
 
-make start //для запуска на локальном хосте
+make localstart //для запуска на локальном хосте
 ```
 
 #### Системные требования
