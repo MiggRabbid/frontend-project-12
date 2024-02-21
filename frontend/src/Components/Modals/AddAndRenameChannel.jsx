@@ -81,36 +81,41 @@ const AddAndRenameChannel = ({ modalType }) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Control
-            ref={inputRef}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.newChannelName}
-            id="newChannelName"
-            name="newChannelName"
-            isInvalid={formik.touched.newChannelName && formik.errors.newChannelName}
-            disabled={formik.isSubmitting}
-          />
-          <Form.Label className="visually-hidden">{t('modals.addAndRename.inputPlaceholder')}</Form.Label>
-          <Form.Control.Feedback type="invalid">
-            {formik.errors.newChannelName}
-          </Form.Control.Feedback>
-          <div className="mt-3 d-flex justify-content-end">
-            <Button
-              onClick={() => dispatch(modalActions.closedModal())}
-              variant="secondary"
-              className="me-2"
-            >
-              {t('modals.cancelButton')}
-            </Button>
-            {' '}
-            <Button
-              type="submit"
-              variant="primary"
-            >
-              {t('modals.addAndRename.button')}
-            </Button>
-          </div>
+          <Form.Group>
+            <Form.Control
+              ref={inputRef}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.newChannelName}
+              id="newChannelName"
+              name="newChannelName"
+              isInvalid={formik.touched.newChannelName && formik.errors.newChannelName}
+              disabled={formik.isSubmitting}
+            />
+            <label className="visually-hidden" htmlFor="newChannelName">
+              {t('modals.addAndRename.inputPlaceholder')}
+            </label>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.newChannelName}
+            </Form.Control.Feedback>
+            <div className="mt-3 d-flex justify-content-end">
+              <Button
+                onClick={() => dispatch(modalActions.closedModal())}
+                variant="secondary"
+                className="me-2"
+              >
+                {t('modals.cancelButton')}
+              </Button>
+              {' '}
+              <Button
+                type="submit"
+                variant="primary"
+              >
+                {t('modals.addAndRename.button')}
+              </Button>
+            </div>
+          </Form.Group>
+
         </Form>
       </Modal.Body>
     </>
