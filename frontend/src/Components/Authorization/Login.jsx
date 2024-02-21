@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 import useAuth from '../../hooks/index';
+import getError from '../../selectors/authSelectors';
 import { actions as authActions } from '../../slices/authSlice';
 import routes from '../../routes';
 import logo from '../../assets/logo800-800.png';
@@ -22,7 +23,7 @@ const Login = () => {
   const usernameRef = useRef();
   const { user, logIn } = useAuth();
 
-  const error = useSelector((state) => state.authReducer.error);
+  const error = useSelector(getError);
 
   const formik = useFormik({
     initialValues: { username: '', password: '' },

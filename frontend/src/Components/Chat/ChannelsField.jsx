@@ -4,6 +4,7 @@ import { PlusSquare } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
+import { getCurrentChannels, getActiveChannel } from '../../selectors/chatSelectors';
 import { actions as chatActions } from '../../slices/chatSlice';
 import { actions as modalActions } from '../../slices/modalSlice';
 
@@ -11,8 +12,8 @@ const ChannelsField = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const currentChannels = useSelector((state) => state.chatReducer.currentChannels);
-  const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
+  const currentChannels = useSelector(getCurrentChannels);
+  const activeChannel = useSelector(getActiveChannel);
 
   const handelSwitchChanel = (event) => {
     dispatch(chatActions.setActiveChannel({
@@ -22,10 +23,12 @@ const ChannelsField = () => {
   };
 
   const handelChangeChannel = (event) => {
+    const changeableСhannel = currentChannels.find((channel) => channel.id === event.target.id);
     dispatch(modalActions.openModal({
       id: event.target.id,
       modalType: event.target.dataset.change,
       show: true,
+      name: changeableСhannel ? changeableСhannel.name : '',
     }));
   };
 
@@ -38,9 +41,11 @@ const ChannelsField = () => {
           type="button"
           variant="group-vertical"
           className="p-0 text-primary"
+          id="addChannel"
+          data-change="addChannel"
         >
           <PlusSquare id="addChannel" data-change="addChannel" size={20} />
-          <span className="visually-hidden">{t('chatPage.channels.addButton')}</span>
+          <span className="visually-hidden" id="addChannel" data-change="addChannel">{t('chatPage.channels.addButton')}</span>
         </Button>
       </div>
       { currentChannels === null
@@ -87,8 +92,8 @@ const ChannelsField = () => {
                         <span className="visually-hidden">{t('chatPage.channels.changeButton')}</span>
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item id={channel.id} data-change="removeChannel" onClick={handelChangeChannel} href="#/action-1">
-                          {t('chatPage.channels.removeChannel')}
+                        <Dropdown.Item id={channel.id} data-change="deleteChannel" onClick={handelChangeChannel} href="#/action-1">
+                          {t('chatPage.channels.deleteChannel')}
                         </Dropdown.Item>
                         <Dropdown.Item id={channel.id} data-change="renameChannel" onClick={handelChangeChannel} href="#/action-2">
                           {t('chatPage.channels.renameChannel')}

@@ -6,6 +6,7 @@ const modalSlice = createSlice({
     show: false,
     modalType: null,
     changeableСhannelId: null,
+    changeableСhannelName: null,
   },
   reducers: {
     openModal: (state, action) => ({
@@ -13,6 +14,7 @@ const modalSlice = createSlice({
       show: action.payload.show,
       modalType: action.payload.modalType,
       changeableСhannelId: action.payload.id,
+      changeableСhannelName: action.payload.name,
     }),
     closedModal: (state) => ({
       ...state,

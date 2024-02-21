@@ -8,6 +8,7 @@ import leoProfanity from 'leo-profanity';
 import * as yup from 'yup';
 import axios from 'axios';
 
+import { getActiveChannel, getActiveChannelId, getActiveChat } from '../../selectors/chatSelectors';
 import useAuth from '../../hooks/index';
 import routes from '../../routes';
 
@@ -24,9 +25,9 @@ const ChatField = () => {
   const { getAuthHeader } = useAuth();
 
   const user = JSON.parse(localStorage.getItem('user'));
-  const activeChannel = useSelector((state) => state.chatReducer.activeChannel);
-  const activeChannelId = useSelector((state) => state.chatReducer.activeChannelId);
-  const activeChat = useSelector((state) => state.chatReducer.activeChat);
+  const activeChannel = useSelector(getActiveChannel);
+  const activeChannelId = useSelector(getActiveChannelId);
+  const activeChat = useSelector(getActiveChat);
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -49,7 +50,7 @@ const ChatField = () => {
   });
 
   useEffect(() => {
-    messageRef.current.focus();
+    setTimeout(() => messageRef.current.focus());
   }, [messageRef]);
 
   const isValidInput = !formik.dirty || !formik.isValid;
