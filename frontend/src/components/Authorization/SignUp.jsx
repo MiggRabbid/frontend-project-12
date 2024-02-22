@@ -36,42 +36,37 @@ const SignUp = () => {
   const usernameRef = useRef();
   const passwordRef = useRef();
   const confirmPassword = useRef();
-  const { logIn } = useAuth();
+  const { user, logIn } = useAuth();
 
   const error = useSelector(getError);
 
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
     validationSchema: getValidationSchema(t),
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      axios.post(routes.signupRequestPath(), {
-        username: values.username,
-        password: values.password,
-      })
-        .then((response) => {
-          console.log(response.data);
-          logIn(response.data);
-          navigate(routes.chatPagePath());
-        })
-        .catch((e) => {
-          console.error(e);
-          if (!e.isAxiosError) {
-            toast.error(t('toasts.auth.unknownErr'));
-          } else if (e.response.status === 409) {
-            dispatch(authActions.loginFailed(e.response.data));
-          } else {
-            toast.error(t('toasts.auth.networkErr'));
-          }
-        }).finally(() => {
-          setSubmitting(false);
-        });
+      try {
+        const response = await axios.post(routes.signupRequestPath(), values);
+        logIn(response.data);
+        navigate(routes.chatPagePath());
+      } catch (e) {
+        console.error(e);
+        if (!e.isAxiosError) {
+          toast.error(t('toasts.auth.unknownErr'));
+        } else if (e.response.status === 409) {
+          dispatch(authActions.loginFailed(e.response.data));
+        } else {
+          toast.error(t('toasts.auth.networkErr'));
+        }
+      }
+      setSubmitting(false);
     },
   });
 
   useEffect(() => {
-    usernameRef.current.focus();
-  }, []);
+    if (user) navigate(routes.chatPagePath());
+    if (!user) usernameRef.current.focus();
+  }, [user, navigate, usernameRef]);
 
   return (
     <div className="container-fluid h-100">

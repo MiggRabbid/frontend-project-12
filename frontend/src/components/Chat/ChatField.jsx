@@ -32,20 +32,20 @@ const ChatField = () => {
   const formik = useFormik({
     initialValues: { message: '' },
     validationSchema: getValidationSchema(t),
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       const newMessage = {
         body: leoProfanity.clean(values.message),
         channelId: activeChannelId,
         username: user.username,
       };
-      axios.post(routes.dataRequestPath('messages'), newMessage, { headers: getAuthHeader() })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          messageRef.current.focus();
-          actions.resetForm({ values: { message: '' } });
-        });
+      const headers = await getAuthHeader();
+      try {
+        await axios.post(routes.dataRequestPath('messages'), newMessage, { headers });
+      } catch (error) {
+        console.error(error);
+      }
+      actions.resetForm({ values: { message: '' } });
+      messageRef.current.focus();
     },
   });
 

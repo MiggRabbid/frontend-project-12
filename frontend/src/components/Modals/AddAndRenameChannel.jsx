@@ -38,41 +38,38 @@ const AddAndRenameChannel = ({ modalType }) => {
   const formik = useFormik({
     initialValues: { newChannelName: changeableСhannelName },
     validationSchema: getValidationSchema(t, currentChannelsNames),
-    onSubmit: (values) => {
-      const newChannelName = {
-        name: leoProfanity.clean(values.newChannelName),
-      };
-      if (modalType === 'addChannel') {
-        axios.post(routes.dataRequestPath('channels'), newChannelName, { headers: getAuthHeader() })
-          .then(() => {
-            dispatch(modalActions.closedModal());
-            toast.success(t('toasts.addChannel.success'));
-          })
-          .catch((error) => {
-            toast.error(t('toasts.addChannel.error'));
-            console.error(error);
-          });
-      }
-      if (modalType === 'renameChannel') {
-        axios.patch(routes.dataRequestPath(`channels/${changeableСhannelId}`), newChannelName, { headers: getAuthHeader() })
-          .then((response) => {
-            if (response.data.id === activeChannelId) {
-              dispatch(chatActions.setActiveChannel(newChannelName));
-            }
-            dispatch(modalActions.closedModal());
-            toast.success(t('toasts.renameChannel.success'));
-          })
-          .catch((error) => {
-            toast.error(t('toasts.renameChannel.error'));
-            console.error(error);
-          });
+    onSubmit: async (values) => {
+      const newChannelName = { name: leoProfanity.clean(values.newChannelName) };
+      const headers = await getAuthHeader();
+      const requestPath = (modalType === 'addChannel')
+        ? routes.dataRequestPath('channels')
+        : routes.dataRequestPathWithId('channels', changeableСhannelId);
+      try {
+        if (modalType === 'addChannel') {
+          const response = await axios.post(requestPath, newChannelName, { headers });
+          const { name, id } = response.data;
+          dispatch(chatActions.setActiveChannel({ name, id }));
+        }
+        if (modalType === 'renameChannel') {
+          const response = await axios.patch(requestPath, newChannelName, { headers });
+          if (response.data.id === activeChannelId) {
+            const { name, id } = response.data;
+            dispatch(chatActions.setActiveChannel({ name, id }));
+          }
+        }
+        dispatch(modalActions.closedModal());
+        toast.success(t(`toasts.${modalType}.success`));
+      } catch (error) {
+        toast.error(t(`toasts.${modalType}.error`));
+        console.error(error);
       }
     },
   });
 
   useEffect(() => {
-    inputRef.current.select();
-  }, [inputRef]);
+    if (modalType === 'addChannel') inputRef.current.focus();
+    if (modalType === 'renameChannel') inputRef.current.select();
+  }, [inputRef, modalType]);
 
   return (
     <>
@@ -115,7 +112,6 @@ const AddAndRenameChannel = ({ modalType }) => {
               </Button>
             </div>
           </Form.Group>
-
         </Form>
       </Modal.Body>
     </>

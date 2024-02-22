@@ -23,7 +23,6 @@ const AuthProvider = ({ children }) => {
     if (localUser && localUser.token) {
       return { Authorization: `Bearer ${localUser.token}` };
     }
-
     return {};
   };
 

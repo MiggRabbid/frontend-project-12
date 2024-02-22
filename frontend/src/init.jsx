@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 
 import reducer, { actions } from './slices/index';
 import badWords from './locales/badWords';
-import { RollbarProvider, I18nProvider, AuthProvider } from './Components/Providers/Providers';
-import App from './Components/App';
+import { RollbarProvider, I18nProvider, AuthProvider } from './components/Providers/Providers';
+import App from './components/App';
 
 const initApp = () => {
   const store = configureStore({
@@ -28,7 +28,7 @@ const initApp = () => {
     store.dispatch(actions.renameChannel(newChannel));
   });
   socket.on('removeChannel', (remoteChannel) => {
-    store.dispatch(actions.removeChannel(remoteChannel));
+    store.dispatch(actions.deleteChannel(remoteChannel));
   });
 
   return (

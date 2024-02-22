@@ -27,35 +27,29 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: { username: '', password: '' },
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      axios.post(routes.loginRequestPath(), values)
-        .then((response) => {
-          logIn(response.data);
-          navigate(routes.chatPagePath());
-        })
-        .catch((e) => {
-          console.error(e);
-          if (!e.isAxiosError) {
-            toast.error(t('toasts.auth.unknownErr'));
-          } else if (e.response.status === 401) {
-            dispatch(authActions.loginFailed(e.response.data));
-          } else {
-            toast.error(t('toasts.auth.networkErr'));
-          }
-        })
-        .finally(() => {
-          setSubmitting(false);
-        });
+      try {
+        const response = await axios.post(routes.loginRequestPath(), values);
+        logIn(response.data);
+        navigate(routes.chatPagePath());
+      } catch (e) {
+        console.error(e);
+        if (!e.isAxiosError) {
+          toast.error(t('toasts.auth.unknownErr'));
+        } else if (e.response.status === 401) {
+          dispatch(authActions.loginFailed(e.response.data));
+        } else {
+          toast.error(t('toasts.auth.networkErr'));
+        }
+      }
+      setSubmitting(false);
     },
   });
 
   useEffect(() => {
-    if (user) {
-      navigate(routes.chatPagePath());
-    } else {
-      usernameRef.current.focus();
-    }
+    if (user) navigate(routes.chatPagePath());
+    if (!user) usernameRef.current.focus();
   }, [user, navigate, usernameRef]);
 
   return (

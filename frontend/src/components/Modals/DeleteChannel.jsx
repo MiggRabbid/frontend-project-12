@@ -16,16 +16,17 @@ const AddModal = () => {
 
   const changeableСhannelId = useSelector(getChangeableСhannelId);
 
-  const handleRemoveButton = () => {
-    axios.delete(routes.dataRequestPath(`channels/${changeableСhannelId}`), { headers: getAuthHeader() })
-      .then(() => {
-        dispatch(modalActions.closedModal());
-        toast.success(t('toasts.deleteChannel.success'));
-      })
-      .catch((error) => {
-        toast.error(t('toasts.deleteChannel.error'));
-        console.error(error);
-      });
+  const handleRemoveButton = async () => {
+    const requestPath = routes.dataRequestPathWithId('channels', changeableСhannelId);
+    const headers = await getAuthHeader();
+    try {
+      await axios.delete(requestPath, { headers });
+      dispatch(modalActions.closedModal());
+      toast.success(t('toasts.deleteChannel.success'));
+    } catch (error) {
+      toast.error(t('toasts.deleteChannel.error'));
+      console.error(error);
+    }
   };
 
   return (
