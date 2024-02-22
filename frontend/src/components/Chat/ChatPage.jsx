@@ -14,21 +14,18 @@ const ChatPage = () => {
   const { getAuthHeader } = useAuth();
 
   useEffect(() => {
-    axios.get(routes.dataRequestPath('messages'), { headers: getAuthHeader() }).then((response) => {
-      dispatch(chatActions.setCurrentChats(response.data));
-    })
-      .catch((error) => {
+    const axiosRequest = async () => {
+      const headers = await getAuthHeader();
+      try {
+        const messages = await axios.get(routes.dataRequestPath('messages'), { headers });
+        const channels = await axios.get(routes.dataRequestPath('channels'), { headers });
+        dispatch(chatActions.setCurrentChats(messages.data));
+        dispatch(chatActions.setCurrentChannels(channels.data));
+      } catch (error) {
         console.error(error);
-      });
-  }, [dispatch, getAuthHeader]);
-
-  useEffect(() => {
-    axios.get(routes.dataRequestPath('channels'), { headers: getAuthHeader() }).then((response) => {
-      dispatch(chatActions.setCurrentChannels(response.data));
-    })
-      .catch((error) => {
-        console.error(error);
-      });
+      }
+    };
+    axiosRequest();
   }, [dispatch, getAuthHeader]);
 
   return (

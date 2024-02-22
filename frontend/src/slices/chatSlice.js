@@ -34,7 +34,7 @@ const chatSlice = createSlice({
     },
     updateCurrentChats: (state, action) => {
       const newMessage = action.payload;
-      const updatedCurrentChats = [...state.currentChats, action.payload];
+      const updatedCurrentChats = [...state.currentChats, newMessage];
       return (state.activeChannelId !== newMessage.channelId)
         ? ({
           ...state,
@@ -49,9 +49,8 @@ const chatSlice = createSlice({
     updateCurrentChannels: (state, action) => ({
       ...state,
       currentChannels: [...state.currentChannels, action.payload],
-      activeChannel: action.payload.name,
     }),
-    removeChannel: (state, action) => {
+    deleteChannel: (state, action) => {
       const { currentChannels, activeChannelId } = state;
       const deletedId = action.payload.id;
       const updatedChannels = currentChannels.filter((channels) => channels.id !== deletedId);
@@ -67,13 +66,12 @@ const chatSlice = createSlice({
         });
     },
     renameChannel: (state, action) => {
-      console.log('renameChannel -', action.payload);
-      const { currentChannels, activeChannel } = state;
+      const { currentChannels, activeChannelId } = state;
       const renameChannel = action.payload;
       const updatedChannels = currentChannels.map((channel) => ((channel.id !== renameChannel.id)
         ? channel
         : renameChannel));
-      return (activeChannel !== renameChannel.name)
+      return (activeChannelId !== renameChannel.id)
         ? ({ ...state, currentChannels: updatedChannels })
         : ({ ...state, currentChannels: updatedChannels, activeChannel: renameChannel.name });
     },
