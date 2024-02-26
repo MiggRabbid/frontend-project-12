@@ -5,21 +5,25 @@ import AuthContext from '../../contexts/index';
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(currentUser
-    ? { user: currentUser.username, token: currentUser.token }
+    ? { username: currentUser.username, token: currentUser.token }
     : null);
+  console.log('AuthProvider -', currentUser);
 
   const logIn = (data) => {
+    console.log('logIn -', data);
     localStorage.setItem('user', JSON.stringify(data));
-    setUser({ user: data.username, token: data.token });
+    setUser({ username: data.username, token: data.token });
   };
 
   const logOut = () => {
+    console.log('logIn -');
     localStorage.removeItem('user');
     setUser(null);
   };
 
   const getAuthHeader = () => {
     const localUser = JSON.parse(localStorage.getItem('user'));
+    console.log('getAuthHeader -', localUser);
     if (localUser && localUser.token) {
       return { Authorization: `Bearer ${localUser.token}` };
     }

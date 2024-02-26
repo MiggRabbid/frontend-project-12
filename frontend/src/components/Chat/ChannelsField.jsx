@@ -22,13 +22,34 @@ const ChannelsField = () => {
     }));
   };
 
+  /*
+    Т.к. модальные окна для добавления и переименования канала обеденены в 1н элемент,
+  то тут пришлось использовать 2е функции: для кнопки добавления, и отдельно для
+  переименования и удаленяи канала. Можно использовать одну функцию обработчик,
+  но тогда в ней придется использовать тернарные операторы.
+  Возможно это пепеусложнение, и нужно было сделать отдельные элементы, но
+  т.к. они максимально похожи, то я решил объеденить их.
+  */
+  const handelAddChannel = (event) => {
+    dispatch(modalActions.openModal({
+      id: '',
+      modalType: event.target.dataset.change,
+      show: true,
+      name: '',
+    }));
+  };
+
+  /*
+    changeableСhannel находит изменяемый канал и далее,
+    при переименовании, имя канала добавляется в инпут модального окна.
+  */
   const handelChangeChannel = (event) => {
     const changeableСhannel = currentChannels.find((channel) => channel.id === event.target.id);
     dispatch(modalActions.openModal({
       id: event.target.id,
       modalType: event.target.dataset.change,
       show: true,
-      name: changeableСhannel ? changeableСhannel.name : '',
+      name: changeableСhannel.name,
     }));
   };
 
@@ -37,7 +58,7 @@ const ChannelsField = () => {
       <div className="d-flex mt-1 align-items-center justify-content-between mb-2 ps-4 pe-2 p-4">
         <strong>{t('chatPage.channels.title')}</strong>
         <Button
-          onClick={handelChangeChannel}
+          onClick={handelAddChannel}
           type="button"
           variant="group-vertical"
           className="p-0 text-primary"

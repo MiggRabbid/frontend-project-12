@@ -22,9 +22,8 @@ const getValidationSchema = (t) => yup.object().shape({
 const ChatField = () => {
   const { t } = useTranslation();
   const messageRef = useRef();
-  const { getAuthHeader } = useAuth();
+  const { user, getAuthHeader } = useAuth();
 
-  const user = JSON.parse(localStorage.getItem('user'));
   const activeChannel = useSelector(getActiveChannel);
   const activeChannelId = useSelector(getActiveChannelId);
   const activeChat = useSelector(getActiveChat);

@@ -1,7 +1,11 @@
+import { createSelector } from 'reselect';
+
 export const getCurrentChannels = (state) => state.chatReducer.currentChannels;
 
-export const getCurrentChannelsNames = (state) => (state.chatReducer.currentChannels
-  .map((channel) => channel.name));
+export const getCurrentChannelsNames = createSelector(
+  [getCurrentChannels],
+  (currentChannels) => currentChannels.map((channel) => channel.name),
+);
 
 export const getActiveChannel = (state) => state.chatReducer.activeChannel;
 
