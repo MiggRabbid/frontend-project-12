@@ -4,10 +4,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/79a34c1604286747d0f1/maintainability)](https://codeclimate.com/github/MiggRabbid/frontend-project-12/maintainability)
 
 ---
+<br>
+
 # Чат (Slack)
 
 Аналог Slack-чата (упрощенная версия).
 <br>
+
 Ссылка на проект: [клик](https://simple-chat-x30r.onrender.com).
 
 ---

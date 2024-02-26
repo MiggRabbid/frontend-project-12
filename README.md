@@ -6,10 +6,12 @@
 #### [ru README.md](./README_ru.md)
 
 ---
-# Chat (Slack)
+<br>
 
+# Chat (Slack)
 An analog of a simplified version of a Slack chat.
 <br>
+
 Project link: [click](https://simple-chat-x30r.onrender.com).
 
 ---
