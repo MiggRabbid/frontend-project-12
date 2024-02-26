@@ -8,7 +8,7 @@ import leoProfanity from 'leo-profanity';
 import * as yup from 'yup';
 import axios from 'axios';
 
-import { getCurrentChannels, getActiveChannelId } from '../../selectors/chatSelectors';
+import { getCurrentChannelsNames, getActiveChannelId } from '../../selectors/chatSelectors';
 import { getChangeableСhannelId, getChangeableСhannelName } from '../../selectors/modalSelectors';
 import { actions as modalActions } from '../../slices/modalSlice';
 import { actions as chatActions } from '../../slices/chatSlice';
@@ -29,14 +29,13 @@ const AddAndRenameChannel = ({ modalType }) => {
   const inputRef = useRef();
   const { getAuthHeader } = useAuth();
 
-  const currentChannelsNames = useSelector(getCurrentChannels)
-    .map((channel) => channel.name);
+  const currentChannelsNames = useSelector(getCurrentChannelsNames);
   const activeChannelId = useSelector(getActiveChannelId);
   const changeableСhannelId = useSelector(getChangeableСhannelId);
   const changeableСhannelName = useSelector(getChangeableСhannelName);
 
   const formik = useFormik({
-    initialValues: { newChannelName: changeableСhannelName },
+    initialValues: { newChannelName: (changeableСhannelName) },
     validationSchema: getValidationSchema(t, currentChannelsNames),
     onSubmit: async (values) => {
       const newChannelName = { name: leoProfanity.clean(values.newChannelName) };
