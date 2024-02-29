@@ -10,20 +10,17 @@ const AuthProvider = ({ children }) => {
   console.log('AuthProvider -', currentUser);
 
   const logIn = (data) => {
-    console.log('logIn -', data);
     localStorage.setItem('user', JSON.stringify(data));
     setUser({ username: data.username, token: data.token });
   };
 
   const logOut = () => {
-    console.log('logIn -');
     localStorage.removeItem('user');
     setUser(null);
   };
 
   const getAuthHeader = () => {
     const localUser = JSON.parse(localStorage.getItem('user'));
-    console.log('getAuthHeader -', localUser);
     if (localUser && localUser.token) {
       return { Authorization: `Bearer ${localUser.token}` };
     }

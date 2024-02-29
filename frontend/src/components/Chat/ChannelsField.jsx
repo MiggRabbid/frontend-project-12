@@ -32,17 +32,11 @@ const ChannelsField = () => {
   */
   const handelAddChannel = (event) => {
     dispatch(modalActions.openModal({
-      id: '',
       modalType: event.target.dataset.change,
       show: true,
-      name: '',
     }));
   };
 
-  /*
-    changeableСhannel находит изменяемый канал и далее,
-    при переименовании, имя канала добавляется в инпут модального окна.
-  */
   const handelChangeChannel = (event) => {
     const changeableСhannel = currentChannels.find((channel) => channel.id === event.target.id);
     dispatch(modalActions.openModal({
