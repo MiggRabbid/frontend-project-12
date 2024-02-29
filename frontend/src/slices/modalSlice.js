@@ -13,8 +13,8 @@ const modalSlice = createSlice({
       ...state,
       show: action.payload.show,
       modalType: action.payload.modalType,
-      changeableСhannelId: action.payload.id,
-      changeableСhannelName: action.payload.name,
+      changeableСhannelId: action.payload.id || null,
+      changeableСhannelName: action.payload.name || null,
     }),
     closedModal: (state) => ({
       ...state,

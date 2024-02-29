@@ -1,4 +1,4 @@
-### Hexlet tests, ESLint status and Maintainability from Codeclimate.com::
+### Hexlet tests, ESLint status and Maintainability from Codeclimate.com:
 [![Actions Status](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/MiggRabbid/frontend-project-12/actions)
 [![ESLint check](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/linter.yml/badge.svg)](https://github.com/MiggRabbid/frontend-project-12/actions/workflows/linter.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/79a34c1604286747d0f1/maintainability)](https://codeclimate.com/github/MiggRabbid/frontend-project-12/maintainability)
@@ -6,10 +6,12 @@
 #### [ru README.md](./README_ru.md)
 
 ---
-# Chat (Slack)
-
-An analog of a simplified version of a Slack chat.
 <br>
+
+# Chat (Slack)
+Real-time application, analogue of Slack chat (simplified version).
+<br>
+
 Project link: [click](https://simple-chat-x30r.onrender.com).
 
 ---
